@@ -17,7 +17,7 @@ class OrdersService
      */
     public function confirmOrder(Merchant $merchant, Order $order, array $stockItems): bool
     {
-        $status = $this->checkEnoughStock($order, $stockItems);
+        $status = $this->hasEnoughStock($order, $stockItems);
         if (!$status) {
             $order->setStatus(OrderStatus::CANCELLED);
             return false;
@@ -39,7 +39,7 @@ class OrdersService
      * @param Order $order,
      * @param StockItem[] $stockItems
      */
-    private function checkEnoughStock(Order $order, array $stockItems): bool
+    private function hasEnoughStock(Order $order, array $stockItems): bool
     {
         $status = true;
         $orderIngredients = $order->getIngredients();

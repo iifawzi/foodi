@@ -1,6 +1,6 @@
 <?php
 
-namespace types;
+namespace Src\Domain\Types;
 
 enum OrderStatus: string
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace types;
+namespace Src\Domain\Types;
 
-enum StockItemStatus:string
+enum StockItemStatus: string
 {
     case INSTOCK = "INSTOCK";
     case LOWSTOCK = "LOWSTOCK";

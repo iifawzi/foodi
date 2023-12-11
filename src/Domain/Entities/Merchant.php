@@ -1,5 +1,6 @@
 <?php
 
+namespace Src\Domain\Entities;
 class Merchant
 {
     private int $id;

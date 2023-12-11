@@ -1,24 +1,25 @@
 <?php
 
-use types\StockItemStatus;
+namespace Src\Domain\Entities;
+use Src\Domain\Types\StockItemStatus;
 
 class StockItem
 {
     private int $id;
     private int $fullQuantity;
     private int $availableQuantity;
-    private int $thresholdPercentage;
+    private float $thresholdPercentage;
 
     private StockItemStatus $stockStatus = StockItemStatus::INSTOCK;
 
-    public function __construct(int $id, int $fullQuantity, int $availableQuantity, int $thresholdPercentage)
+    public function __construct(int $id, int $fullQuantity, int $availableQuantity, float $thresholdPercentage)
     {
         $this->id = $id;
         $this->fullQuantity = $fullQuantity;
         $this->availableQuantity = $availableQuantity;
-        $this->thresholdPercentage = $thresholdPercentage;
+        $this->thresholdPercentage = $thresholdPercentage / 100;
 
-        if ($availableQuantity <= $fullQuantity * $thresholdPercentage) {
+        if ($availableQuantity <= $fullQuantity * $this->thresholdPercentage) {
             $this->stockStatus = StockItemStatus::LOWSTOCK;
         }
     }
@@ -30,7 +31,7 @@ class StockItem
         }
 
         $this->availableQuantity -= $quantity;
-        if (($this->availableQuantity - $quantity) <= $this->fullQuantity * $this->thresholdPercentage) {
+        if ($this->availableQuantity <= $this->fullQuantity * $this->thresholdPercentage) {
             $this->stockStatus = StockItemStatus::LOWSTOCK;
         }
         return $this->stockStatus;

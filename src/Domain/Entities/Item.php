@@ -1,5 +1,6 @@
 <?php
 
+namespace Src\Domain\Entities;
 class Item
 {
     private int $id;
@@ -28,7 +29,8 @@ class Item
     /**
      * @returns array<int, Ingredient>
      */
-    public function getIngredients(): array {
+    public function getIngredients(): array
+    {
         return $this->ingredients;
     }
 

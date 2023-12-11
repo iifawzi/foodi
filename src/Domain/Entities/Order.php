@@ -1,9 +1,12 @@
 <?php
 
+namespace Src\Domain\Entities;
+
 use Ramsey\Uuid\UuidInterface;
 use Illuminate\Support\Str;
-use types\OrderStatus;
-use types\StockItemStatus;
+use Src\Domain\Types\OrderStatus;
+use Src\Domain\Types\StockItemStatus;
+
 
 class Order
 {

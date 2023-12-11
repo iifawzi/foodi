@@ -6,6 +6,7 @@ class Item
     private int $id;
     private string $name;
     private int $unitPrice;
+    private int $totalPrice;
     private string $quantity;
 
     /**
@@ -19,6 +20,7 @@ class Item
         $this->name = $name;
         $this->unitPrice = $price;
         $this->quantity = $quantity;
+        $this->totalPrice = $this->unitPrice * $this->quantity;
     }
 
     public function setIngredient(Ingredient $ingredient): void
@@ -52,5 +54,10 @@ class Item
     public function getUnitPrice(): int
     {
         return $this->unitPrice;
+    }
+
+    public function getTotalPrice(): int
+    {
+        return $this->totalPrice;
     }
 }

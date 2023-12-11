@@ -5,8 +5,6 @@ namespace Src\Domain\Entities;
 use Ramsey\Uuid\UuidInterface;
 use Illuminate\Support\Str;
 use Src\Domain\Types\OrderStatus;
-use Src\Domain\Types\StockItemStatus;
-
 
 class Order
 {
@@ -40,42 +38,15 @@ class Order
 
     }
 
-    /**
-     * @param StockItem[] $stock
-     * @return bool
-     */
-    public function confirmOrder(array $stock): bool
-    {
-        $status = $this->checkStock($stock);
-        if (!$status) {
-            $this->status = OrderStatus::CANCELLED;
-            return false;
-        }
-        $this->status = OrderStatus::CREATED;
-        return true;
-    }
 
-    /**
-     * @param StockItem[] $stockItems
-     */
-    private function checkStock(array $stockItems): bool
-    {
-        foreach ($stockItems as $stock) {
-            $stockStatus = $stock->consume($this->ingredients[$stock->getId()]);
-            if ($stockStatus == StockItemStatus::LOWSTOCK) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    public function getId(): UuidInterface
+    public
+    function getId(): UuidInterface
     {
         return $this->id;
     }
 
-    public function getStatus(): OrderStatus
+    public
+    function getStatus(): OrderStatus
     {
         return $this->status;
     }
@@ -83,7 +54,8 @@ class Order
     /**
      * @returns Item[]
      */
-    public function getItems(): array
+    public
+    function getItems(): array
     {
         return $this->items;
     }
@@ -91,8 +63,14 @@ class Order
     /**
      * @return array<int, int>
      */
-    public function getIngredients(): array
+    public
+    function getIngredients(): array
     {
         return $this->ingredients;
+    }
+
+    public function setStatus(OrderStatus $status): void
+    {
+        $this->status = $status;
     }
 }

@@ -7,6 +7,12 @@ class Merchant
     private string $name;
     private string $email;
 
+    /**
+     * @var StockItem[];
+     */
+    private array $itemsToRefill = [];
+
+
     public function __construct(int $id, string $name, string $email)
     {
         $this->id = $id;
@@ -27,5 +33,17 @@ class Merchant
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function notifyAboutStock(StockItem $stock) {
+        $this->itemsToRefill[] = $stock;
+    }
+
+    /**
+     * @return StockItem[]
+     */
+    public function getItemsToRefill(): array
+    {
+        return $this->itemsToRefill;
     }
 }

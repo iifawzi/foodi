@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('low_stock_notifications', function (Blueprint $table) {
             $table->id();
+            $table->string("status");
             $table->unsignedInteger("threshold");
             $table->timestamps();
 

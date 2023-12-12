@@ -4,6 +4,7 @@ namespace Tests\mocks\repositories;
 
 use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
 use Src\Domain\Entities\StockItem;
+use Src\Infrastructure\types\LowStockNotificationType;
 
 class MockedStockNotificationRepository implements StockNotificationRepository
 {
@@ -16,7 +17,12 @@ class MockedStockNotificationRepository implements StockNotificationRepository
     public function save(array $stockItems): void
     {
         foreach ($stockItems as $stockItem) {
-            $this->data[] = ["ingredientId" => $stockItem->getId(), "name" => $stockItem->getName(), "exceeded" => $stockItem->getThresholdLimit()];
+            $this->data[] = [
+                "ingredientId" => $stockItem->getId(),
+                "merchantId" => $stockItem->getMerchantId(),
+                "status" => LowStockNotificationType::PENDING,
+                "threshold" => $stockItem->getThresholdLimit()
+            ];
         }
     }
 

@@ -13,7 +13,9 @@ trait SeederHelper
         if ($connection == 'pgsql') {
             DB::statement("SET session_replication_role = 'replica'");
         } elseif ($connection == "mysql") {
-
+            DB::statement("SET FOREIGN_KEY_CHECKS=0;");
+        } elseif($connection == 'sqlite') {
+            DB::statement("PRAGMA ignore_check_constraints = 0;");
         }
     }
 
@@ -23,7 +25,9 @@ trait SeederHelper
         if ($connection == 'pgsql') {
             DB::statement("SET session_replication_role = 'origin';");
         } elseif ($connection == 'mysql') {
-
+            DB::statement("SET FOREIGN_KEY_CHECKS=1;");
+        } elseif($connection == 'sqlite') {
+            DB::statement("PRAGMA ignore_check_constraints = 1;");
         }
     }
 

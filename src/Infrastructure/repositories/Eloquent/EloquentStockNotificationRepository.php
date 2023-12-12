@@ -14,7 +14,8 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
             $dataToInsert[] = [
                 'threshold' => $stock->getThresholdLimit(),
                 'ingredient_id' => $stock->getId(),
-                "merchant_id" => $stock->getMerchantId()
+                "merchant_id" => $stock->getMerchantId(),
+                "status" => "PENDING",
             ];
         }
         LowStockNotification::factory()->createMany($dataToInsert);

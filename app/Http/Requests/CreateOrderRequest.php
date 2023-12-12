@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateOrderRequest extends FormRequest
 {
@@ -24,7 +25,8 @@ class CreateOrderRequest extends FormRequest
         return [
             'merchantId' => [
                 'integer',
-                'min:1'
+                'min:1',
+                Rule::exists('merchants', 'merchant_id')
             ],
             'products' => [
                 'required',
@@ -34,7 +36,8 @@ class CreateOrderRequest extends FormRequest
             'products.*.product_id' => [
                 'required',
                 'integer',
-                'min:1'
+                'min:1',
+                Rule::exists('products', 'product_id')
             ],
             'products.*.quantity' => [
                 'required',

@@ -2,11 +2,14 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\traits\SeederHelper;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class MerchantSeeder extends Seeder
 {
+    use SeederHelper;
+
     /**
      * Run the database seeds.
      */
@@ -30,9 +33,7 @@ class MerchantSeeder extends Seeder
             ]
         ];
 
-        if (DB::table('merchant')->count() !== 0) {
-            DB::table('merchant')->delete();
-        }
-        DB::table('merchant')->insert($merchants);
+        $this->TruncateTable("merchants");
+        DB::table("merchants")->insert($merchants);
     }
 }

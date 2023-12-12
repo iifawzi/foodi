@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('low_stock_notification', function (Blueprint $table) {
+        Schema::create('low_stock_notifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger("threshold");
             $table->timestamps();
 
             $table->foreignId("merchant_id");
-            $table->foreign("merchant_id")->on("merchant")->references("merchant_id");
+            $table->foreign("merchant_id")->on("merchants")->references("merchant_id");
             $table->foreignId("ingredient_id");
-            $table->foreign("ingredient_id")->on("ingredient_stock")->references("ingredient_id");
+            $table->foreign("ingredient_id")->on("ingredient_stocks")->references("ingredient_id");
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('low_stock_notification');
+        Schema::dropIfExists('low_stock_notifications');
     }
 };

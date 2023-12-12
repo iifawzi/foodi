@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId("ingredient_id");
-            $table->foreign("ingredient_id")->on("ingredient_stock")->references("ingredient_id");
+            $table->foreign("ingredient_id")->on("ingredient_stocks")->references("ingredient_id");
         });
     }
 

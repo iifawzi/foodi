@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('merchant', function (Blueprint $table) {
+        Schema::create('merchants', function (Blueprint $table) {
             $table->unsignedInteger('merchant_id')->autoIncrement();
             $table->string('name');
             $table->string('email');
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('merchant');
+        Schema::dropIfExists('merchants');
     }
 };

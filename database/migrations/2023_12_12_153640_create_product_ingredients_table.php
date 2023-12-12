@@ -16,8 +16,8 @@ return new class extends Migration
 
             $table->foreignId('product_id');
             $table->foreignId('ingredient_id');
-            $table->foreign('product_id')->on('product')->references('product_id');
-            $table->foreign('ingredient_id')->on('ingredient_stock')->references('ingredient_id');
+            $table->foreign('product_id')->on('products')->references('product_id');
+            $table->foreign('ingredient_id')->on('ingredient_stocks')->references('ingredient_id');
 
             $table->primary(['product_id', 'ingredient_id']);
         });

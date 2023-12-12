@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\traits\SeederHelper;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class IngredientStockSeeder extends Seeder
 {
+    use SeederHelper;
     /**
      * Run the database seeds.
      */
@@ -32,7 +34,7 @@ class IngredientStockSeeder extends Seeder
                 'merchant_id' => 1,
             ],
             [
-                'ingredient_id' => 2,
+                'ingredient_id' => 3,
                 'name' => 'Cheese',
                 'description' => 'What\'s better than Swiss Cheese?',
                 'full_quantity' => 2000,
@@ -42,9 +44,7 @@ class IngredientStockSeeder extends Seeder
             ],
         ];
 
-        if (DB::table('ingredient_Stock')->count() !== 0) {
-            DB::table('ingredient_Stock')->delete();
-        }
-        DB::table('ingredient_Stock')->insert($ingredientsStock);
+        $this->TruncateTable("ingredient_stocks");
+        DB::table('ingredient_stocks')->insert($ingredientsStock);
     }
 }

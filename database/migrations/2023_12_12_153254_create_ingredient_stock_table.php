@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ingredient_stock', function (Blueprint $table) {
+        Schema::create('ingredient_stocks', function (Blueprint $table) {
             $table->unsignedBigInteger('ingredient_id')->unsigned()->autoIncrement();
             $table->string('name');
             $table->text('description');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('merchant_id');
-            $table->foreign("merchant_id")->on('merchant')->references("merchant_id");
+            $table->foreign("merchant_id")->on('merchants')->references("merchant_id");
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ingredient_stock');
+        Schema::dropIfExists('ingredient_stocks');
     }
 };

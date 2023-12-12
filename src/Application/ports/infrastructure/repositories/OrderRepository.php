@@ -7,5 +7,6 @@ interface OrderRepository
 {
     public function saveOrder(Order $order): void;
     public function startTransaction(): void;
-    public function endTransaction(): void;
+    public function commitTransaction(): void;
+    public function rollbackTransaction(): void;
 }

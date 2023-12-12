@@ -2,6 +2,7 @@
 
 namespace Src\Application\services;
 
+use mysql_xdevapi\Exception;
 use Src\Application\ports\infrastructure\repositories\MerchantRepository;
 use Src\Application\ports\infrastructure\repositories\OrderRepository;
 use Src\Application\ports\infrastructure\repositories\ProductRepository;
@@ -35,6 +36,7 @@ class OrderService
      */
     public function CreateOrder(array $order): array
     {
+        try {
         $productQuantities = collect($order["products"])->pluck('quantity', 'product_id');
 
         $merchant = $this->merchantRepository->getMerchant(data_get($order, 'merchantId', 1));
@@ -61,13 +63,18 @@ class OrderService
         }
 
         $this->orderRepository->saveOrder($order);
-        $this->orderRepository->endTransaction();
+        $this->orderRepository->commitTransaction();
 
         if (count($stocksToRefill)) {
             $this->stockNotificationService->notifyLowThresholdStock($stocksToRefill);
         }
 
         return ["status" => true, "order" => $order];
+        } catch (\Exception $e) {
+            report($e);
+            $this->orderRepository->rollbackTransaction();
+            return ["status" => false, "order" => $order];
+        }
     }
 
 

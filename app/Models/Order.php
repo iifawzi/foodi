@@ -11,6 +11,7 @@ class Order extends Model
 {
     use HasFactory;
     protected $primaryKey = "order_id";
+    protected $keyType = 'string';
 
     protected $casts = [
         'status' => OrderStatus::class

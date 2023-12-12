@@ -10,6 +10,10 @@ class StockTransaction extends Model
 {
     use HasFactory;
     public $timestamps = true;
+
+    protected $primaryKey = "transaction_id";
+    protected $keyType = 'string';
+
     protected $casts = [
         "type" => StockTransactionType::class,
     ];

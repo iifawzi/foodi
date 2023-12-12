@@ -19,7 +19,7 @@ class Order
     /**
      * @var array<int, int>
      */
-    private array $ingredients;
+    private array $ingredients = [];
 
     public function __construct()
     {
@@ -27,15 +27,21 @@ class Order
         $this->status = OrderStatus::PENDING;
     }
 
-    public function addItem(Item $item): void
-    {
-        $this->items[] = $item;
-        foreach ($item->getIngredients() as $ingredient) {
-            $ingredientId = $ingredient->getId();
-            $this->ingredients[$ingredientId] = ($this->ingredients[$ingredientId] ?? 0) +
-                $ingredient->getQuantity() * $item->getQuantity();
-        }
+    /**
+     * @param Item[] $items
+     * @return void
+     */
 
+    public function addItems(array $items): void
+    {
+        foreach ($items as $item) {
+            $this->items[] = $item;
+            foreach ($item->getIngredients() as $ingredient) {
+                $ingredientId = $ingredient->getId();
+                $this->ingredients[$ingredientId] = ($this->ingredients[$ingredientId] ?? 0) +
+                    $ingredient->getQuantity() * $item->getQuantity();
+            }
+        }
     }
 
 

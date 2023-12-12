@@ -7,7 +7,7 @@ use Src\Domain\Entities\Order;
 use Src\Domain\Entities\StockItem;
 use Src\Domain\Types\OrderStatus;
 
-class OrdersService
+class CreateOrderUseCase
 {
     /**
      * @param Merchant $merchant

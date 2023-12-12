@@ -7,25 +7,24 @@ use Src\Domain\Types\StockItemStatus;
 
 class StockItem
 {
-    private int $id;
-    private int $fullQuantity;
-    private int $availableQuantity;
-    private float $thresholdPercentage;
+    private int $thresholdLimit;
 
     /**
      * @var StockTransaction[]
      */
-    private array $stockTransactions;
+    private array $stockTransactions = [];
     private StockItemStatus $stockStatus = StockItemStatus::INSTOCK;
 
-    public function __construct(int $id, int $fullQuantity, int $availableQuantity, float $thresholdPercentage)
+    public function __construct(
+        private readonly int $id,
+        private readonly string $name,
+        private readonly int $fullQuantity,
+        private int $availableQuantity,
+        readonly float $thresholdPercentage)
     {
-        $this->id = $id;
-        $this->fullQuantity = $fullQuantity;
-        $this->availableQuantity = $availableQuantity;
-        $this->thresholdPercentage = $thresholdPercentage / 100;
+        $this->thresholdLimit = ($thresholdPercentage / 100) * $fullQuantity;
 
-        if ($availableQuantity <= $fullQuantity * $this->thresholdPercentage) {
+        if ($availableQuantity <= $this->thresholdLimit) {
             $this->stockStatus = StockItemStatus::LOWSTOCK;
         }
     }
@@ -38,7 +37,7 @@ class StockItem
 
         $this->availableQuantity -= $quantity;
         $this->stockTransactions[] = new StockTransaction($this->id, $quantity, 'order: ' . $orderId);
-        if ($this->availableQuantity <= $this->fullQuantity * $this->thresholdPercentage) {
+        if ($this->availableQuantity < $this->thresholdLimit) {
             if ($this->stockStatus != StockItemStatus::LOWSTOCK) {
                 $this->stockStatus = StockItemStatus::LOWSTOCK;
             }
@@ -84,6 +83,19 @@ class StockItem
     public function getStockTransactions(): array
     {
         return $this->stockTransactions;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return float
+     */
+    public function getThresholdLimit(): float
+    {
+        return $this->thresholdLimit;
     }
 
 }

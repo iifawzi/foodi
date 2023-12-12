@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\mocks;
+namespace Tests\mocks\repositories;
 
 use Illuminate\Support\Collection;
-use Src\Application\ports\infrastructure\ProductRepository;
+use Src\Application\ports\infrastructure\repositories\ProductRepository;
 use Src\Domain\Entities\Ingredient;
 use Src\Domain\Entities\Item;
 

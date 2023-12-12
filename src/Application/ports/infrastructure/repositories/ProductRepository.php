@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Application\ports\infrastructure;
+namespace Src\Application\ports\infrastructure\repositories;
 use Illuminate\Support\Collection;
 use Src\Domain\Entities\Item;
 

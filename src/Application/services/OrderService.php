@@ -2,11 +2,12 @@
 
 namespace Src\Application\services;
 
-use Src\Application\ports\infrastructure\MerchantRepository;
-use Src\Application\ports\infrastructure\OrderRepository;
-use Src\Application\ports\infrastructure\ProductRepository;
-use Src\Application\ports\infrastructure\StockNotificationRepository;
-use Src\Application\ports\infrastructure\StockRepository;
+use Src\Application\ports\infrastructure\repositories\MerchantRepository;
+use Src\Application\ports\infrastructure\repositories\OrderRepository;
+use Src\Application\ports\infrastructure\repositories\ProductRepository;
+use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
+use Src\Application\ports\infrastructure\repositories\StockRepository;
+use Src\Application\ports\infrastructure\StockNotificationService;
 use Src\Domain\Entities\Item;
 use Src\Domain\Entities\Order;
 use Src\Domain\Services\OrderUseCases;
@@ -20,6 +21,7 @@ class OrderService
         private readonly StockRepository             $stockRepository,
         private readonly OrderUseCases               $orderUseCases,
         private readonly StockNotificationRepository $stockNotificationRepository,
+        private readonly StockNotificationService $stockNotificationService,
     )
     {
     }
@@ -51,13 +53,20 @@ class OrderService
         }
 
         $this->stockRepository->updateStocks($stockItems);
-        $this->orderRepository->saveOrder($order);
 
         $stocksToRefill = $merchant->getItemsToRefill();
+
         if (count($stocksToRefill)) {
             $this->stockNotificationRepository->save($stocksToRefill);
         }
+
+        $this->orderRepository->saveOrder($order);
         $this->orderRepository->endTransaction();
+
+        if (count($stocksToRefill)) {
+            $this->stockNotificationService->notifyLowThresholdStock($stocksToRefill);
+        }
+
         return ["status" => true, "order" => $order];
     }
 

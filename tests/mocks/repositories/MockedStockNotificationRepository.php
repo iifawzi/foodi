@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\mocks;
+namespace Tests\mocks\repositories;
 
-use Src\Application\ports\infrastructure\StockNotificationRepository;
+use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
 use Src\Domain\Entities\StockItem;
 
 class MockedStockNotificationRepository implements StockNotificationRepository

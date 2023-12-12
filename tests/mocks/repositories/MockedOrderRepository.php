@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\mocks;
+namespace Tests\mocks\repositories;
 
-use Src\Application\ports\infrastructure\OrderRepository;
+use Src\Application\ports\infrastructure\repositories\OrderRepository;
 use Src\Domain\Entities\Order;
 
 class MockedOrderRepository implements OrderRepository

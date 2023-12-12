@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\mocks;
+namespace Tests\mocks\repositories;
 
-use Src\Application\ports\infrastructure\StockRepository;
+use Src\Application\ports\infrastructure\repositories\StockRepository;
 use Src\Domain\Entities\StockItem;
 use Src\Domain\Entities\StockTransaction;
 

@@ -2,17 +2,19 @@
 
 namespace Integration\Application;
 
-use Src\Application\ports\infrastructure\MerchantRepository;
-use Src\Application\ports\infrastructure\OrderRepository;
-use Src\Application\ports\infrastructure\ProductRepository;
-use Src\Application\ports\infrastructure\StockNotificationRepository;
-use Src\Application\ports\infrastructure\StockRepository;
+use Mockery\MockInterface;
+use Src\Application\ports\infrastructure\repositories\MerchantRepository;
+use Src\Application\ports\infrastructure\repositories\OrderRepository;
+use Src\Application\ports\infrastructure\repositories\ProductRepository;
+use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
+use Src\Application\ports\infrastructure\repositories\StockRepository;
+use Src\Application\ports\infrastructure\StockNotificationService;
 use Src\Domain\Types\OrderStatus;
-use Tests\mocks\MockedMerchantRepository;
-use Tests\mocks\MockedOrderRepository;
-use Tests\mocks\MockedProductRepository;
-use Tests\mocks\MockedStockNotificationRepository;
-use Tests\mocks\MockedStockRepository;
+use Tests\mocks\repositories\MockedMerchantRepository;
+use Tests\mocks\repositories\MockedOrderRepository;
+use Tests\mocks\repositories\MockedProductRepository;
+use Tests\mocks\repositories\MockedStockNotificationRepository;
+use Tests\mocks\repositories\MockedStockRepository;
 use Tests\TestCase;
 
 class OrderServiceTest extends TestCase
@@ -21,6 +23,7 @@ class OrderServiceTest extends TestCase
     public StockRepository $stockRepository;
     public OrderRepository $orderRepository;
     public StockNotificationRepository $stockNotificationRepository;
+    public MockInterface $stockNotificationService;
 
     public function setUp(): void
     {
@@ -39,6 +42,12 @@ class OrderServiceTest extends TestCase
         $this->app->singleton(ProductRepository::class, MockedProductRepository::class);
         $this->app->singleton(StockRepository::class, MockedStockRepository::class);
         $this->app->singleton(StockNotificationRepository::class, MockedStockNotificationRepository::class);
+
+        $this->stockNotificationService = \Mockery::mock(StockNotificationService::class);
+        $this->instance(
+            StockNotificationService::class,
+            $this->stockNotificationService
+        );
     }
 
     public function test_order_is_confirmed_and_stock_deducted_and_logged()
@@ -86,7 +95,6 @@ class OrderServiceTest extends TestCase
         $this->assertEquals(3, $stock3Transaction[0]->getIngredientId());
         $this->assertEquals(40, $stock3Transaction[0]->getQuantity());
     }
-
     public function test_order_with_multiple_products_is_confirmed_and_stock_deducted_and_logged()
     {
         /**
@@ -143,9 +151,44 @@ class OrderServiceTest extends TestCase
         $this->assertEquals(3, $stock3Transaction[0]->getIngredientId());
         $this->assertEquals(70, $stock3Transaction[0]->getQuantity());
     }
-
-    public function test_order_confirmed_and_merchant_notified_for_low_stock_only_once()
+    public function test_order_cancelled_when_any_ingredient_out_of_stock()
     {
+        /**
+         * product one consists of 3 ingredients
+         * 1- beef 150g -- full quantity 2000
+         * 2- cheese 30g -- full quantity 500
+         * 3- Onion 20g -- full quantity 200
+         * check mocked product and stock for mocks.
+         */
+        $request = [
+            "merchantId" => 1,
+            "products" => [
+                ["product_id" => 1, "quantity" => 11],
+            ],
+        ];
+
+        ["status" => $status, "order" => $order] = $this->orderService->CreateOrder($request);
+        // onion is out of stock, we can't serve 11 order.
+        $this->assertFalse($status);
+        $this->assertEquals(OrderStatus::CANCELLED, $order->getStatus());
+    }
+    public function test_order_confirmed_and_merchant_notified_for_low_stock_only_once_per_ingredient()
+    {
+        // after first order, the merchant will be notified of two ingredients running low (beef and onion)
+        $this->stockNotificationService
+            ->shouldReceive('notifyLowThresholdStock')
+            ->times(1)
+            ->withArgs(function ($arguments) {
+                return count($arguments) == 2;
+            });
+
+        // after first order, the merchant will be notified of the third ingredient ( cheese )
+        $this->stockNotificationService
+            ->shouldReceive('notifyLowThresholdStock')
+            ->times(1)
+            ->withArgs(function ($arguments) {
+                return count($arguments) == 1;
+            });
         /**
          * product one consists of 3 ingredients
          * 1- beef 150g -- full quantity 2000
@@ -174,27 +217,31 @@ class OrderServiceTest extends TestCase
         $secondNotification = $notifications[1];
         $this->assertEquals(3, $secondNotification["ingredientId"]);
         $this->assertEquals(100, $secondNotification["exceeded"]);
-    }
 
-    public function test_order_cancelled_when_any_ingredient_out_of_stock()
-    {
-        /**
-         * product one consists of 3 ingredients
-         * 1- beef 150g -- full quantity 2000
-         * 2- cheese 30g -- full quantity 500
-         * 3- Onion 20g -- full quantity 200
-         * check mocked product and stock for mocks.
-         */
-        $request = [
+        // CREATING ANOTHER ORDER TO VERIFY IT WON'T BE NOTIFIED.
+        $orderRequest2 = [
             "merchantId" => 1,
             "products" => [
-                ["product_id" => 1, "quantity" => 11],
+                ["product_id" => 1, "quantity" => 2],
             ],
         ];
+        ["status" => $status2, "order" => $order2] = $this->orderService->CreateOrder($orderRequest2);
+        $this->assertTrue($status2);
+        $this->assertEquals(OrderStatus::CONFIRMED, $order2->getStatus());
 
-        ["status" => $status, "order" => $order] = $this->orderService->CreateOrder($request);
-        // onion is out of stock, we can't serve 11 order.
-        $this->assertFalse($status);
-        $this->assertEquals(OrderStatus::CANCELLED, $order->getStatus());
+        // the repository should now have three
+        $notifications = $this->stockNotificationRepository->getNotifications();
+        $this->assertCount(3, $notifications);
+        $firstNotification = $notifications[0];
+        $this->assertEquals(1, $firstNotification["ingredientId"]);
+        $this->assertEquals(1000, $firstNotification["exceeded"]);
+
+        $secondNotification = $notifications[1];
+        $this->assertEquals(3, $secondNotification["ingredientId"]);
+        $this->assertEquals(100, $secondNotification["exceeded"]);
+
+        $secondNotification = $notifications[2];
+        $this->assertEquals(2, $secondNotification["ingredientId"]);
+        $this->assertEquals(250, $secondNotification["exceeded"]);
     }
 }

@@ -9,16 +9,15 @@ use Src\Domain\Types\StockTransactionType;
 class StockTransaction
 {
     private UuidInterface $id;
-    private int $ingredientId;
-    private int $quantity;
-    private string $reason;
     private StockTransactionType $type = StockTransactionType::OUT;
 
-    public function __construct(int $ingredientId, int $quantity, string $reason)
+    public function __construct(
+        private readonly int $ingredientId,
+        private readonly int $quantity,
+        private readonly string $reason
+    )
     {
         $this->id = Str::uuid();
-        $this->quantity = $quantity;
-        $this->reason = $reason;
     }
 
     public function getId(): UuidInterface
@@ -37,5 +36,21 @@ class StockTransaction
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+
+    /**
+     * @return StockTransactionType
+     */
+    public function getType(): StockTransactionType
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIngredientId(): int
+    {
+        return $this->ingredientId;
     }
 }

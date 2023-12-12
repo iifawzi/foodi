@@ -3,23 +3,19 @@
 namespace Src\Domain\Entities;
 class Item
 {
-    private int $id;
-    private string $name;
-    private int $unitPrice;
-    private int $totalPrice;
-    private string $quantity;
+    private readonly int $totalPrice;
 
     /**
      * @var array<int, Ingredient>
      */
     private array $ingredients;
 
-    public function __construct(int $id, string $name, int $price, string $quantity)
+    public function __construct(
+        private readonly int $id,
+        private readonly string $name,
+        private readonly int $unitPrice,
+        private readonly string $quantity)
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->unitPrice = $price;
-        $this->quantity = $quantity;
         $this->totalPrice = $this->unitPrice * $this->quantity;
     }
 

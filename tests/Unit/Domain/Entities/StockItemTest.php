@@ -14,6 +14,8 @@ class StockItemTest extends TestCase
     {
         $stockItem = new StockItem(1, 'beef', 1000, 1000, 50);
         $this->assertEquals(StockItemStatus::INSTOCK, $stockItem->getStockStatus());
+        $this->assertEquals(1000, $stockItem->getFullQuantity());
+        $this->assertEquals(1000, $stockItem->getAvailableQuantity());
         $this->assertEquals(500, $stockItem->getThresholdLimit());
 
         $stockItem1 = new StockItem(1, 'cheese', 1000, 500, 50);
@@ -28,6 +30,13 @@ class StockItemTest extends TestCase
         $canConsumeResult = $stockItem->canConsume(501);
         $this->assertEquals(false, $canConsumeResult);
         $this->assertEquals(500, $stockItem->getAvailableQuantity());
+    }
+
+    public function test_consuming_larger_than_availability_returns_insufficient(): void
+    {
+        $stockItem = new StockItem(1, 'beef', 1000, 500, 50);
+        $consumeResult = $stockItem->consume(501, Str::uuid());
+        $this->assertEquals(StockItemStatus::INSUFFICIENT, $consumeResult);
 
     }
 
@@ -49,7 +58,7 @@ class StockItemTest extends TestCase
 
 
         $transaction = $stockItem->getStockTransactions()[0];
-        $this->assertEquals(20,$transaction->getQuantity());
+        $this->assertEquals(20, $transaction->getQuantity());
         $this->assertEquals('order: ' . $orderId, $transaction->getReason());
         $this->assertNotNull($transaction->getId());
     }

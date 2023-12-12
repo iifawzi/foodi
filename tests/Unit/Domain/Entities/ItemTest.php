@@ -8,6 +8,15 @@ use Src\Domain\Entities\Item;
 
 class ItemTest extends TestCase
 {
+    public function test_item_initialized_correctly(): void
+    {
+        $item = new Item(1, 'Foodi Burger', 100, 2);
+        $this->assertEquals(200, $item->getTotalPrice(200));
+        $this->assertEquals(1, $item->getId());
+        $this->assertEquals(2, $item->getQuantity());
+        $this->assertEquals('Foodi Burger', $item->getName());
+        $this->assertEquals(100, $item->getUnitPrice());
+    }
     public function test_total_price_correctly_calculated(): void
     {
         $item = new Item(1, 'Foodi Burger', 100, 2);

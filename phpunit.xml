@@ -8,6 +8,7 @@
          displayDetailsOnTestsThatTriggerNotices="true"
          displayDetailsOnTestsThatTriggerWarnings="true"
 >
+
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit/domain</directory>
@@ -22,7 +23,9 @@
     <source>
         <include>
             <directory>app</directory>
+            <directory>src</directory>
         </include>
+
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>

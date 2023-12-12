@@ -4,6 +4,7 @@ namespace Tests\Unit\Domain\Entities;
 
 use PHPUnit\Framework\TestCase;
 use Src\Domain\Entities\StockTransaction;
+use Src\Domain\Types\StockTransactionType;
 
 class StockTransactionTest extends TestCase
 {
@@ -11,5 +12,6 @@ class StockTransactionTest extends TestCase
     {
         $stockTransaction = new StockTransaction(1, 1000, "for order test");
         $this->assertNotNull($stockTransaction->getId());
+        $this->assertEquals(StockTransactionType::OUT, $stockTransaction->getType());
     }
 }

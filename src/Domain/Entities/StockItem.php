@@ -17,6 +17,7 @@ class StockItem
 
     public function __construct(
         private readonly int $id,
+        private readonly int $merchantId,
         private readonly string $name,
         private readonly int $fullQuantity,
         private int $availableQuantity,
@@ -90,12 +91,13 @@ class StockItem
         return $this->name;
     }
 
-    /**
-     * @return float
-     */
-    public function getThresholdLimit(): float
+    public function getThresholdLimit(): int
     {
         return $this->thresholdLimit;
     }
 
+    public function getMerchantId(): int
+    {
+        return $this->merchantId;
+    }
 }

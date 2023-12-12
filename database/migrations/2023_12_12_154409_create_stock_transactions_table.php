@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stock_transactions', function (Blueprint $table) {
-            $table->uuid()->primary();
+            $table->uuid('transaction_id')->primary();
             $table->unsignedInteger("quantity");
             $table->text("reason");
+            $table->string("type");
             $table->timestamps();
 
             $table->foreignId("ingredient_id");

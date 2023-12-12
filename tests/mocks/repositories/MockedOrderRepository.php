@@ -21,8 +21,13 @@ class MockedOrderRepository implements OrderRepository
         // TODO: Implement startTransaction() method.
     }
 
-    public function endTransaction(): void
+    public function commitTransaction(): void
     {
-        // TODO: Implement endTransaction() method.
+        // TODO: Implement commitTransaction() method.
+    }
+
+    public function rollbackTransaction(): void
+    {
+        // TODO: Implement rollbackTransaction() method.
     }
 }

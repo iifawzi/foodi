@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::prefix('v1')
+    // we could create separate routers files, if there will be more routes.
+    ->group(function (){
+        Route::prefix('orders')->name('orders')->group(function () {
+            Route::post('/', [OrdersController::class, 'createOrder'])
+                ->name('create');
+        });
+    });

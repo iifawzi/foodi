@@ -2,7 +2,6 @@
 
 namespace Src\Application\services;
 
-use mysql_xdevapi\Exception;
 use Src\Application\ports\infrastructure\repositories\MerchantRepository;
 use Src\Application\ports\infrastructure\repositories\OrderRepository;
 use Src\Application\ports\infrastructure\repositories\ProductRepository;
@@ -73,7 +72,7 @@ class OrderService
         } catch (\Exception $e) {
             report($e);
             $this->orderRepository->rollbackTransaction();
-            return ["status" => false, "order" => $order];
+            return ["status" => false, "order" => null];
         }
     }
 

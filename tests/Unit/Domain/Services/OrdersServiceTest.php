@@ -7,7 +7,7 @@ use Src\Domain\Entities\Item;
 use Src\Domain\Entities\Merchant;
 use Src\Domain\Entities\Order;
 use Src\Domain\Entities\StockItem;
-use Src\Domain\Services\OrdersService;
+use Src\Domain\Services\OrderUseCases;
 use Src\Domain\Types\OrderStatus;
 use Tests\TestCase;
 
@@ -29,14 +29,14 @@ class OrdersServiceTest extends TestCase
         $item2->setIngredient($ingredient2);
 
         $order = new Order();
-        $order->addItem($item);
-        $order->addItem($item2);
+        $order->addItems([$item]);
+        $order->addItems([$item2]);
 
-        $stock1 = new StockItem(1, 50, 50, 50);
-        $stock2 = new StockItem(2, 100, 90, 50);
-        $stock3 = new StockItem(3, 60, 100, 50);
+        $stock1 = new StockItem(1, 'beef', 50, 50, 50);
+        $stock2 = new StockItem(2, 'beef', 100, 90, 50);
+        $stock3 = new StockItem(3, 'beef',60, 100, 50);
 
-        $orderService = new OrdersService();
+        $orderService = new OrderUseCases();
         $stockItems = [$stock1, $stock2, $stock3];
         $orderStatus = $orderService->confirmOrder($merchant, $order, $stockItems);
 
@@ -60,14 +60,14 @@ class OrdersServiceTest extends TestCase
         $item2->setIngredient($ingredient2);
 
         $order = new Order();
-        $order->addItem($item);
-        $order->addItem($item2);
+        $order->addItems([$item]);
+        $order->addItems([$item2]);
 
-        $stock1 = new StockItem(1, 50, 50, 50);
-        $stock2 = new StockItem(2, 100, 90, 50);
-        $stock3 = new StockItem(3, 60, 99, 50);
+        $stock1 = new StockItem(1, 'beef', 50, 50, 50);
+        $stock2 = new StockItem(2, 'Cheese', 100, 90, 50);
+        $stock3 = new StockItem(3, 'Onion', 60, 99, 50);
 
-        $orderService = new OrdersService();
+        $orderService = new OrderUseCases();
         $stockItems = [$stock1, $stock2, $stock3];
         $orderStatus = $orderService->confirmOrder($merchant, $order, $stockItems);
 
@@ -88,13 +88,13 @@ class OrdersServiceTest extends TestCase
         $item2->setIngredient($ingredient2);
 
         $order = new Order();
-        $order->addItem($item);
-        $order->addItem($item2);
+        $order->addItems([$item]);
+        $order->addItems([$item2]);
 
-        $stock1 = new StockItem(1, 100, 100, 50);
-        $stock2 = new StockItem(2, 100, 90, 50);
+        $stock1 = new StockItem(1, 'Beef', 100, 100, 50);
+        $stock2 = new StockItem(2, 'Cheese', 100, 90, 50);
 
-        $orderService = new OrdersService();
+        $orderService = new OrderUseCases();
         $stockItems = [$stock1, $stock2];
 
         $orderService->confirmOrder($merchant, $order, $stockItems);
@@ -105,7 +105,7 @@ class OrdersServiceTest extends TestCase
         $item3 = new Item(3, 'Blue cheese foodi', 100, 1);
         $item3->setIngredient($ingredient1);
         $order2 = new Order();
-        $order2->addItem($item);
+        $order2->addItems([$item]);
         $orderService->confirmOrder($merchant, $order2, $stockItems);
 
         // second time the stock go below threshold, merchant shouldn't be notified again.

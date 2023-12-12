@@ -23,7 +23,7 @@ class OrderTest extends TestCase
         $item->setIngredient($ingredient1);
 
         $order = new Order();
-        $order->addItem($item);
+        $order->addItems([$item]);
 
         $expectedItems = [$item];
         $this->assertEquals($expectedItems, $order->getItems());
@@ -46,8 +46,8 @@ class OrderTest extends TestCase
 
 
         $order = new Order();
-        $order->addItem($item);
-        $order->addItem($item2);
+        $order->addItems([$item]);
+        $order->addItems([$item2]);
 
         // ingredient one's quantity is 2, used for 3 items (2 of item 1 & 1 of item 2) => 6
         // ingredient two's quantity is 10, used for 1 item (item 2) => 10

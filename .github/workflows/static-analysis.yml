@@ -1,6 +1,11 @@
 name: Static Analysis
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.php'
 
 jobs:
   phpstan:

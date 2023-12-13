@@ -2,12 +2,18 @@
 
 namespace Src\Application\ports\infrastructure\repositories;
 
-use Src\Domain\Entities\StockItem;
+use Ramsey\Uuid\UuidInterface;
+use Src\Infrastructure\types\LowStockNotificationType;
 
 interface StockNotificationRepository
 {
     /**
-     * @var StockItem[] $stockItems
+     * @param array{
+     *      notification_id: UuidInterface,
+     *      status: LowStockNotificationType,
+     *      ingredient_id: int
+     *  } $notifications
+     * /
      */
-    public function save(array $stockItems): void;
+    public function save(array $notifications): void;
 }

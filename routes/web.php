@@ -16,7 +16,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/testEmail', function () {
-    return (new \App\Mail\LowStockNotification([["ingredientId" => 1, "ingredientName" => "lol", "current" => 1, "threshold" => 1]], "fawzi"))->render();
-});

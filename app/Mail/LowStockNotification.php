@@ -7,7 +7,6 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Src\Domain\Entities\StockTransaction;
 
 class LowStockNotification extends Mailable
 {
@@ -20,12 +19,12 @@ class LowStockNotification extends Mailable
      *     "ingredientName": string,
      *     "threshold": int,
      *     "current": int
-     * } $items
+     * } $item
      *
      * @param string $merchantName
      *
      */
-    public function __construct(private readonly array $items, private readonly string $merchantName)
+    public function __construct(private readonly array $item, private readonly string $merchantName)
     {
 
     }
@@ -47,7 +46,7 @@ class LowStockNotification extends Mailable
     {
         return new Content(
             markdown: 'mail.lowStock',
-            with: ["name" => $this->merchantName, "items" => $this->items]
+            with: ["name" => $this->merchantName, "item" => $this->item]
         );
     }
 

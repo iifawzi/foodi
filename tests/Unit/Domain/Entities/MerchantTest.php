@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domain\Entities;
 use Src\Domain\Entities\Merchant;
 use Src\Domain\Entities\StockItem;
+use Src\Infrastructure\types\LowStockNotificationType;
 use Tests\TestCase;
 
 class MerchantTest extends TestCase
@@ -20,6 +21,8 @@ class MerchantTest extends TestCase
         $stock = new StockItem(1, 'Beef', 100, 40, 50);
         $merchant->notifyAboutStock($stock);
 
-        $this->assertEquals([$stock], $merchant->getItemsToRefill());
+        $notification = $merchant->getNotifications()[0];
+        $this->assertEquals(LowStockNotificationType::PENDING, $notification["status"]);
+        $this->assertEquals($stock->getId(), $notification["ingredient_id"]);
     }
 }

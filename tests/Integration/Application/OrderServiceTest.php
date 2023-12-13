@@ -211,10 +211,10 @@ class OrderServiceTest extends TestCase
         $notifications = $this->stockNotificationRepository->getNotifications();
         $this->assertCount(2, $notifications);
         $firstNotification = $notifications[0];
-        $this->assertEquals(1, $firstNotification["ingredientId"]);
+        $this->assertEquals(1, $firstNotification["ingredient_id"]);
 
         $secondNotification = $notifications[1];
-        $this->assertEquals(3, $secondNotification["ingredientId"]);
+        $this->assertEquals(3, $secondNotification["ingredient_id"]);
 
         // CREATING ANOTHER ORDER TO VERIFY IT WON'T BE NOTIFIED.
         $orderRequest2 = [
@@ -231,12 +231,12 @@ class OrderServiceTest extends TestCase
         $notifications = $this->stockNotificationRepository->getNotifications();
         $this->assertCount(3, $notifications);
         $firstNotification = $notifications[0];
-        $this->assertEquals(1, $firstNotification["ingredientId"]);
+        $this->assertEquals(1, $firstNotification["ingredient_id"]);
 
         $secondNotification = $notifications[1];
-        $this->assertEquals(3, $secondNotification["ingredientId"]);
+        $this->assertEquals(3, $secondNotification["ingredient_id"]);
 
         $secondNotification = $notifications[2];
-        $this->assertEquals(2, $secondNotification["ingredientId"]);
+        $this->assertEquals(2, $secondNotification["ingredient_id"]);
     }
 }

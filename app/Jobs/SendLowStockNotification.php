@@ -9,9 +9,13 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Src\Infrastructure\types\LowStockNotificationType;
 
 class SendLowStockNotification implements ShouldQueue
 {
+    public int $tries = 3;
+    public array $backoff = [60, 180];
+
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
@@ -26,21 +30,30 @@ class SendLowStockNotification implements ShouldQueue
      */
     public function handle(): bool
     {
-        ["items" => $items, "email" => $email, "name" => $merchantName] = $this->getNotificationsToSend();
+        ["items" => $items, "email" => $email, "name" => $merchantName] = $this->getTheNotification();
         if (count($items)) {
-            Mail::to($email)->send(new \App\Mail\LowStockNotification($items, $merchantName));
+            foreach ($items as $item) {
+                Mail::to($email)->send(new \App\Mail\LowStockNotification($item, $merchantName));
+            }
         }
         return true;
     }
 
 
-    private function getNotificationsToSend(): array
+    private function getTheNotification(): array
     {
-
         $notifications = LowStockNotification::with(['ingredientStock', 'ingredientStock.merchant'])
-            ->whereIn('ingredient_id', $this->id)
-            ->where('status', 'PENDING')
+            ->whereIn('notification_id', $this->id)
+            ->where('status', LowStockNotificationType::PENDING)
             ->get();
+
+        if (count($notifications)) {
+            // so they're not pulled again by the scheduler
+            LowStockNotification::query()->whereIn('notification_id', $this->id)
+                ->where('status', LowStockNotificationType::PENDING)
+                ->update(['status' => LowStockNotificationType::QUEUED]);
+        }
+
 
         $merchantName = null;
         $merchantEmail = null;
@@ -52,7 +65,7 @@ class SendLowStockNotification implements ShouldQueue
             $available = $ingredientStock->available_quantity;
             $full = $ingredientStock->full_quantity;
             $min_percentage = $ingredientStock->min_threshold_percentage;
-            $threshold = $full * $min_percentage;
+            $threshold = $full * ($min_percentage / 100);
 
             if (!isset($merchantName)) {
                 $merchantName = $ingredientStock->merchant->name;
@@ -63,8 +76,8 @@ class SendLowStockNotification implements ShouldQueue
               continue;
             }
             $items[] = [
-                "ingredientId" => $ingredientId,
-                "ingredientName" => $ingredientName,
+                "ingredient_id" => $ingredientId,
+                "ingredient_name" => $ingredientName,
                 "threshold" => $threshold,
                 "current" => $available
             ];

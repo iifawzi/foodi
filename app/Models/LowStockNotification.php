@@ -11,6 +11,8 @@ use Src\Infrastructure\types\LowStockNotificationType;
 class LowStockNotification extends Model
 {
     use HasFactory;
+    protected $primaryKey = "notification_id";
+    protected $keyType = "string";
     protected $casts = [
         'status' => LowStockNotificationType::class
     ];

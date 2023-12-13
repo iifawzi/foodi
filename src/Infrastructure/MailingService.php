@@ -8,11 +8,11 @@ use Src\Application\ports\infrastructure\StockNotificationService;
 class MailingService implements StockNotificationService
 {
 
-    public function notifyLowThresholdStock(array $stocksItems): void
+    public function notifyLowThresholdStock(array $notifications): void
     {
         $ids = [];
-        foreach ($stocksItems as $stocksItem) {
-            $ids[] = $stocksItem->getId();
+        foreach ($notifications as $notification) {
+            $ids[] = $notification["notification_id"];
         }
         SendLowStockNotification::dispatch($ids);
     }

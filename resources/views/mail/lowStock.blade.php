@@ -6,9 +6,7 @@ we need to inform you that the stocks below have exceeded their defined limit.
 @component('mail::table')
 | Ingredient ID | Ingredient Name | Current | Threshold |
 | :------------: | :--------------: | :------: | :--------: |
-@foreach ($items as $item)
-| {{ $item['ingredientId'] }} | {{ $item['ingredientName'] }} | {{ $item['current'] }} | {{ $item['threshold'] }} |
-@endforeach
+| {{ $item['ingredient_id'] }} | {{ $item['ingredient_name'] }} | {{ $item['current'] }} | {{ $item['threshold'] }} |
 @endcomponent
 
 Thanks, <br>

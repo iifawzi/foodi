@@ -2,6 +2,7 @@
 
 namespace Tests\mocks\repositories;
 
+use Ramsey\Uuid\UuidInterface;
 use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
 use Src\Domain\Entities\StockItem;
 use Src\Infrastructure\types\LowStockNotificationType;
@@ -11,15 +12,21 @@ class MockedStockNotificationRepository implements StockNotificationRepository
     private array $data = [];
 
     /**
-     * @param StockItem[] $stockItems
-     * @return void
+     * @param array{
+     *      notification_id: UuidInterface,
+     *      status: LowStockNotificationType,
+     *      ingredient_id: int
+     *  } $notifications
+     * /
+     * /
      */
-    public function save(array $stockItems): void
+    public function save(array $notifications): void
     {
-        foreach ($stockItems as $stockItem) {
+        foreach ($notifications as $notification) {
             $this->data[] = [
-                "ingredientId" => $stockItem->getId(),
-                "status" => LowStockNotificationType::PENDING,
+                "notification_id" => $notification["notification_id"],
+                "ingredient_id" => $notification["ingredient_id"],
+                "status" => $notification["ingredient_id"],
             ];
         }
     }

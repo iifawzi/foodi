@@ -1,13 +1,22 @@
 <?php
 
 namespace Src\Domain\Entities;
+use Faker\Core\Uuid;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\UuidInterface;
+use Src\Infrastructure\types\LowStockNotificationType;
+
 class Merchant
 {
 
     /**
-     * @var StockItem[];
+     * @var array{
+     *      notification_id: UuidInterface,
+     *      status: LowStockNotificationType,
+     *      ingredient_id: int
+     *  } $notifications
      */
-    private array $itemsToRefill = [];
+    private array $notifications = [];
 
     public function __construct(
         private readonly int    $id,
@@ -35,14 +44,22 @@ class Merchant
 
     public function notifyAboutStock(StockItem $stock): void
     {
-        $this->itemsToRefill[] = $stock;
+        $this->notifications[] = [
+            "notification_id" => Str::uuid(),
+            "status" => LowStockNotificationType::PENDING,
+            "ingredient_id" => $stock->getId(),
+        ];
     }
 
     /**
-     * @return StockItem[]
+     * @return array{
+     *     notification_id: UuidInterface,
+     *     status: LowStockNotificationType,
+     *     ingredient_id: int
+     * }
      */
-    public function getItemsToRefill(): array
+    public function getNotifications(): array
     {
-        return $this->itemsToRefill;
+        return $this->notifications;
     }
 }

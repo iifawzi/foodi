@@ -55,17 +55,17 @@ class OrderService
 
         $this->stockRepository->updateStocks($stockItems);
 
-        $stocksToRefill = $merchant->getItemsToRefill();
+        $notifications = $merchant->getNotifications();
 
-        if (count($stocksToRefill)) {
-            $this->stockNotificationRepository->save($stocksToRefill);
+        if (count($notifications)) {
+            $this->stockNotificationRepository->save($notifications);
         }
 
         $this->orderRepository->saveOrder($order);
         $this->orderRepository->commitTransaction();
 
-        if (count($stocksToRefill)) {
-            $this->stockNotificationService->notifyLowThresholdStock($stocksToRefill);
+        if (count($notifications)) {
+            $this->stockNotificationService->notifyLowThresholdStock($notifications);
         }
 
         return ["status" => true, "order" => $order];

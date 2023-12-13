@@ -9,6 +9,7 @@ use Src\Domain\Entities\Order;
 use Src\Domain\Entities\StockItem;
 use Src\Domain\Services\OrderUseCases;
 use Src\Domain\Types\OrderStatus;
+use Src\Infrastructure\types\LowStockNotificationType;
 use Tests\TestCase;
 
 class OrdersServiceTest extends TestCase
@@ -99,7 +100,9 @@ class OrdersServiceTest extends TestCase
 
         $orderService->confirmOrder($merchant, $order, $stockItems);
         // first time the stock go below threshold, expecting merchant to have been notified.
-        $this->assertEquals([$stock1], $merchant->getItemsToRefill());
+        $firstNotification = $merchant->getNotifications()[0];
+        $this->assertEquals(LowStockNotificationType::PENDING, $firstNotification["status"]);
+        $this->assertEquals($stock1->getId(), $firstNotification["ingredient_id"]);
 
         // second order with item using the same ingredient.
         $item3 = new Item(3, 'Blue cheese foodi', 100, 1);
@@ -110,7 +113,9 @@ class OrdersServiceTest extends TestCase
 
         // second time the stock go below threshold, merchant shouldn't be notified again.
         // expecting the array to contain the notification only once.
-        $this->assertEquals([$stock1], $merchant->getItemsToRefill());
+        $notifications = $merchant->getNotifications();
+        self::assertCount(1, $notifications);
+
     }
 
 }

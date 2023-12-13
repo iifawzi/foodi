@@ -10,5 +10,5 @@ class OrderItem extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $fillable = ["quantity", "unit_price", "total_price", "product_id", "order_id"];
+    protected $fillable = ["quantity", "unit_price", "total_price", "product_id"];
 }

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('low_stock_notifications', function (Blueprint $table) {
-            $table->uuid("notification_id")->primary();
+            $table->string("notification_id")->primary();
             $table->string("status");
             $table->timestamps();
 
-            $table->foreignId("ingredient_id")->type("integer");
+            $table->unsignedInteger("ingredient_id");
             $table->foreign("ingredient_id")->on("ingredient_stocks")->references("ingredient_id");
         });
     }

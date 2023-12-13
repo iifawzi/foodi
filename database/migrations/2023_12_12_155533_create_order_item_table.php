@@ -17,10 +17,10 @@ return new class extends Migration
             $table->unsignedInteger("quantity");
             $table->unsignedInteger('total_price');
 
-            $table->foreignUuid('order_id');
+            $table->string('order_id');
             $table->foreign('order_id')->on('orders')->references('order_id');
 
-            $table->foreignId('product_id')->type("integer");
+            $table->unsignedInteger('product_id')->type("integer");
             $table->foreign('product_id')->on('products')->references('product_id');
         });
     }

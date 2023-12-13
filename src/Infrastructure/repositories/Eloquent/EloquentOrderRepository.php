@@ -3,7 +3,6 @@
 namespace Src\Infrastructure\repositories\Eloquent;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Src\Application\ports\infrastructure\repositories\OrderRepository;
 use Src\Domain\Entities\Order;
 
@@ -19,17 +18,16 @@ class EloquentOrderRepository implements OrderRepository
                 "unit_price" => $item->getUnitPrice(),
                 "total_price" => $item->getTotalPrice(),
                 "product_id" => $item->getId(),
-                "order_id" => "e6fe146e-77db-4869-8921-5761560e3bfa",
             ];
         }
 
 
         /**
- * @var \App\Models\Order $orderModel 
+ * @var \App\Models\Order $orderModel
 */
         $orderModel = \App\Models\Order::factory()->createOne(
             [
-            "order_id" => $order->getId(),
+            "order_id" => $order->getId()->toString(),
             "status" => $order->getStatus(),
             ]
         );

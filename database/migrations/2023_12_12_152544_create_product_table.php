@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("description");
             $table->string("price");
 
-            $table->foreignId('merchant_id')->type("integer");
+            $table->unsignedInteger('merchant_id');
             $table->foreign('merchant_id')->on('merchants')->references('merchant_id');
         });
     }

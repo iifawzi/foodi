@@ -13,7 +13,7 @@ class EloquentStockRepository implements StockRepository
 
     public function getStockItems(array $ingredientIds): array
     {
-        $stockItems = IngredientStock::query()->whereIn("ingredient_id", $ingredientIds)->get()->all();
+        $stockItems = IngredientStock::query()->whereIn("ingredient_id", $ingredientIds)->lockForUpdate()->get()->all();
 
         $items = [];
         foreach ($stockItems as $stockItem) {

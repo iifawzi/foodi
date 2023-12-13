@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('product_ingredients', function (Blueprint $table) {
             $table->unsignedInteger('base_quantity');
 
-            $table->foreignId('product_id')->type("integer");
-            $table->foreignId('ingredient_id')->type("integer");
+            $table->unsignedInteger('product_id');
+            $table->unsignedInteger('ingredient_id');
             $table->foreign('product_id')->on('products')->references('product_id');
             $table->foreign('ingredient_id')->on('ingredient_stocks')->references('ingredient_id');
 

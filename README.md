@@ -176,6 +176,23 @@ https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/t
 
 The actual implementation of the repositories is on the infrastructure layer, where we can decide what to use, whether are we using `Eloquent` or any other solution, it doesn't matter. as long as they implement the repositories interfaces. 
 
+##### Application layer: 
+
+It mediates communication between core business logic (domain) and external systems (infrastructure), where i'm defining the `driven` ports, for external components to interact with the application layer.
+
+The application layer is the layer that's responsible for the communication between the domain and the infrastructure, it defines the `driven` and `driving` ports. 
+for simplification in this project, I didn't implement any `driving` ports, the application service communicates directly with the domain's service. `driven` ports are defined in the repositories directory, and the mail-service. these ports must be implemented by anyone willing to interact/to be managed with/by the domain. 
+
+The application services are also infrastructure agnostic, hence you will notice that no `HTTP` errors are thrown for example, but instead domain responses are returned. 
+
+https://github.com/iifawzi/foodi/blob/878ce9645f1655b725797233e122e71c468d004a/src/Application/services/OrderService.php#L57-L76
+
+This gives us the flexibility of choosing any adapter in the infra, whether it's RPC, REST, or even socket layer. it doesn't matter. 
+
+##### Infrastructure layer: 
+
+Infrastructure layer is where the `adapters` are implements, here you can find all the `eloquent` implementations of the repositories as well as the mailing service implementation. The driving adapters ( controllers ) are defined in the core directory `app`. 
+
 ### System Architecture
 
 Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, the system architecture takes into account potential challenges:

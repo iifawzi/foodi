@@ -144,22 +144,30 @@ src
         └── LowStockNotificationType.php
 ```
 
-The business logic — the rules and processes we all understand — is encapsulated within the `Domain` directory. This is the common language that resonates with developers, stakeholders, program managers, and everyone involved in the project. It serves as a foundational agreement that unites us in our shared understanding.
+The business logic — the rules and processes we all understand — is encapsulated within the `Domain` directory. This is the common language that resonates with developers, stakeholders, program managers, and everyone involved in the project. It serves as a foundational agreement that unites us in our shared understanding. This also helped in testing and verifying the entire domain logic before thinking about any infrastructure details. 
 
 ##### Key Components in the Domain
-- Entities
+
+- Entities:
+
 The heart of the domain is the entities. These hold the essential data, representing real-world concepts like orders, ingredients, and the specifics of a the food we love. These entities act as the backbone of the system, defining what data we work with and how it relates.
 
-- Use Cases
+- Use Cases:
+  
 Within the `useCases`, we zoom in on specific scenarios, like creating an order. Here, use cases focus on the detailed steps and logic involved in executing a particular use case. This approach keeps our business logic organized and easy to follow.
 
 - Isolation and Dependency Management
+  
 The domain is deliberately isolated, meaning it operates independently of any infrastructure-related logic. This isolation is intentional— it allows us to maintain a clear distinction between what our system does (business logic) and how it does it (infrastructure logic).
+https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/src/Application/services/OrderService.php#L15-L26
 
-    - Dependency Injection
-        To facilitate this separation, we adopt a dependency injection approach. Instead of the domain reaching out to infrastructure components, dependencies are injected into it, thanks to the defined interfaces. This ensures flexibility and simplifies testing, as we can substitute real implementations with mocks, as we did in the integration tests. 
+- Dependency Injection: 
 
-        In essence, the domain is a self-contained, understandable, and flexible part of the system. It represents the language we collectively speak in the project.
+as the code above shows, to facilitate this separation, we adopt a dependency injection approach. Instead of the application layer reaching out to infrastructure components, dependencies are injected into it, thanks to the defined interfaces. 
+
+This ensures flexibility and simplifies testing, as we can substitute real implementations with mocks, as we did in the integration tests. 
+
+https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/tests/Integration/Application/OrderServiceTest.php#L40-L54
 
 
 ### System Architecture

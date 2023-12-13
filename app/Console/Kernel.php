@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command(CheckMissedNotifications::class)->everySecond();
+         $schedule->command(CheckMissedNotifications::class)->everyThirtyMinutes();
     }
 
     /**

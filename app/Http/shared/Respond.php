@@ -24,7 +24,7 @@ class Respond
      */
     public static function Error(int $statusCode, ?string $message, $error = null): JsonResponse
     {
-        $responseData = ["success" => false, "message" => $message, "error" => $error ?? []];
+        $responseData = ["success" => false, "message" => $message, "errors" => $error ?? []];
         return response()->json($responseData, $statusCode);
     }
 }

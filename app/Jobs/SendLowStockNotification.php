@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\LowStockNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -10,7 +9,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
-use Src\Infrastructure\types\LowStockNotificationType;
 
 class SendLowStockNotification implements ShouldQueue
 {
@@ -22,7 +20,7 @@ class SendLowStockNotification implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private readonly array $ids)
+    public function __construct(public readonly array $ids)
     {
     }
 

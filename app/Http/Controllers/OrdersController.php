@@ -24,7 +24,7 @@ class OrdersController extends Controller
             }
 
             if ($order->getStatus() == OrderStatus::CONFIRMED) {
-                return Respond::Success(200, 'Your order has been confirmed successfully');
+                return Respond::Success(201, 'Your order has been confirmed successfully');
             }
 
             return Respond::Success(200, 'Sorry, we have a shortage in the ingredients.');

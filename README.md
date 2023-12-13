@@ -166,9 +166,12 @@ https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/s
 as the code above shows, to facilitate this separation, we adopt a dependency injection approach. Instead of the application layer reaching out to infrastructure components, dependencies are injected into it, thanks to the defined interfaces. 
 
 This ensures flexibility and simplifies testing, as we can substitute real implementations with mocks, as we did in the integration tests. 
+where the entire business logic is tested using `in-memory` database. More on that, in the `Testing and Quality` section below.  
 
 https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/tests/Integration/Application/OrderServiceTest.php#L40-L54
 
+
+The actual implementation of the repositories is on the infrastructure layer, where we can simply decide what to use, are we using
 
 ### System Architecture
 

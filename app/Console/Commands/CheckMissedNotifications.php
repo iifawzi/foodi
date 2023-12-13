@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SendLowStockNotification;
-use App\Models\LowStockNotification;
 use Illuminate\Console\Command;
-use Src\Infrastructure\types\LowStockNotificationType;
-use Carbon\Carbon;
+use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
 
 class CheckMissedNotifications extends Command
 {
@@ -22,18 +20,16 @@ class CheckMissedNotifications extends Command
      *
      * @var string
      */
-    protected $description = 'Queuing the missed to be queued notifications';
+    protected $description = 'Queuing unsent notifications';
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(StockNotificationRepository $stockNotificationRepository)
     {
-        $notificationIds = LowStockNotification::query()
-            ->where("status", LowStockNotificationType::PENDING)
-            ->where('created_at', '<=', Carbon::now('UTC')->subMinutes(30))
-            ->pluck('notification_id')
-            ->toArray();
-        SendLowStockNotification::dispatch($notificationIds);
+        $notificationIds = $stockNotificationRepository->getStuckNotifications();
+        if (count($notificationIds)) {
+            SendLowStockNotification::dispatch($notificationIds);
+        }
     }
 }

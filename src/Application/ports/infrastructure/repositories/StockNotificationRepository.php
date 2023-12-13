@@ -16,4 +16,7 @@ interface StockNotificationRepository
      * /
      */
     public function save(array $notifications): void;
+    public function getStuckNotifications(): array;
+    public function markSent(array $notificationIds): void;
+    public function getPendingWithIds(array $notificationIds): array;
 }

@@ -14,6 +14,11 @@ class MailingService implements StockNotificationService
         foreach ($notifications as $notification) {
             $ids[] = $notification["notification_id"];
         }
-        SendLowStockNotification::dispatch($ids);
+
+        try {
+            SendLowStockNotification::dispatch($ids);
+        } catch (\Exception $e) {
+            report($e);
+        }
     }
 }

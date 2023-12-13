@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
+use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
 use Src\Infrastructure\types\LowStockNotificationType;
 
 class SendLowStockNotification implements ShouldQueue
@@ -21,40 +22,30 @@ class SendLowStockNotification implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private readonly array $id)
+    public function __construct(private readonly array $ids)
     {
     }
 
     /**
      * Execute the job.
      */
-    public function handle(): bool
+    public function handle(StockNotificationRepository $stockNotificationRepository): bool
     {
-        ["items" => $items, "email" => $email, "name" => $merchantName] = $this->getTheNotification();
+        ["items" => $items, "email" => $email, "name" => $merchantName] = $this->getTheNotification($stockNotificationRepository);
+
         if (count($items)) {
             foreach ($items as $item) {
                 Mail::to($email)->send(new \App\Mail\LowStockNotification($item, $merchantName));
             }
+            $stockNotificationRepository->markSent($this->ids);
         }
         return true;
     }
 
 
-    private function getTheNotification(): array
+    private function getTheNotification(StockNotificationRepository $stockNotificationRepository): array
     {
-        $notifications = LowStockNotification::with(['ingredientStock', 'ingredientStock.merchant'])
-            ->whereIn('notification_id', $this->id)
-            ->where('status', LowStockNotificationType::PENDING)
-            ->get();
-
-        if (count($notifications)) {
-            // so they're not pulled again by the scheduler
-            LowStockNotification::query()->whereIn('notification_id', $this->id)
-                ->where('status', LowStockNotificationType::PENDING)
-                ->update(['status' => LowStockNotificationType::QUEUED]);
-        }
-
-
+        $notifications = $stockNotificationRepository->getPendingWithIds($this->ids);
         $merchantName = null;
         $merchantEmail = null;
         $items = [];

@@ -35,4 +35,21 @@ class MockedStockNotificationRepository implements StockNotificationRepository
     {
         return $this->data;
     }
+
+    public function getStuckNotifications(): array
+    {
+        // TESTED ON E2E.
+        return [];
+    }
+
+    public function markSent(array $notificationIds): void
+    {
+        // TESTED ON E2E.
+    }
+
+    public function getPendingWithIds(array $notificationIds): array
+    {
+        // TESTED ON E2E.
+        return [];
+    }
 }

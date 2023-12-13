@@ -100,6 +100,8 @@ The system is built to be dependable, able to handle many orders at once, and be
 
 ### Code Architecture
 
+![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/80e714ac-26fa-48cf-80a6-b86257ce6c53)
+
 The way I've organized the code follows `SOLID` and `Hexagonal Architecture` principles while isolating the domain layer following ddd-design, making it easy to understand and maintain.
 
 #### Files Structure

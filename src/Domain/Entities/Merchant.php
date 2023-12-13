@@ -22,8 +22,7 @@ class Merchant
         public readonly int    $id,
         public readonly string $name,
         public readonly string $email
-    )
-    {
+    ) {
 
     }
 
@@ -57,8 +56,6 @@ class Merchant
      *     status: LowStockNotificationType,
      *     ingredient_id: int
      * }[]
-     *
-     *
      */
     public function getNotifications(): array
     {

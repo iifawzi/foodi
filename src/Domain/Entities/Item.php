@@ -14,8 +14,8 @@ class Item
         private readonly int $id,
         private readonly string $name,
         private readonly int $unitPrice,
-        private readonly int $quantity)
-    {
+        private readonly int $quantity
+    ) {
         $this->totalPrice = $this->unitPrice * $this->quantity;
     }
 

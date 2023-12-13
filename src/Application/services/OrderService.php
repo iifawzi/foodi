@@ -22,12 +22,11 @@ class OrderService
         private readonly OrderUseCases               $orderUseCases,
         private readonly StockNotificationRepository $stockNotificationRepository,
         private readonly StockNotificationService    $stockNotificationService,
-    )
-    {
+    ) {
     }
 
     /**
-     * @param array{
+     * @param  array{
      *     merchantId: int,
      *     products: array{
      *         product_id: int,
@@ -84,7 +83,7 @@ class OrderService
 
 
     /**
-     * @param array<Item> $items
+     * @param  array<Item> $items
      * @return array<int>
      */
     private function getUniqueIngredientIds(array $items): array

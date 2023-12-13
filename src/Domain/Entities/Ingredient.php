@@ -7,8 +7,7 @@ class Ingredient
     public function __construct(
         private readonly int $id,
         private readonly int $quantity
-    )
-    {
+    ) {
     }
 
     public function getId(): int

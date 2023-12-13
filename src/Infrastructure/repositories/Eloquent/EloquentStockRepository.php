@@ -22,7 +22,8 @@ class EloquentStockRepository implements StockRepository
                 $stockItem["name"],
                 $stockItem["full_quantity"],
                 $stockItem["available_quantity"],
-                $stockItem["min_threshold_percentage"]);
+                $stockItem["min_threshold_percentage"]
+            );
         }
         return $items;
     }
@@ -55,9 +56,11 @@ class EloquentStockRepository implements StockRepository
         // The goal is to update all the stocks in a single query.
         IngredientStock::query()
             ->whereIn('ingredient_id', $ingredientIds)
-            ->update([
+            ->update(
+                [
                 'available_quantity' => DB::raw("CASE ingredient_id $caseStatements ELSE available_quantity END")
-            ]);
+                ]
+            );
         StockTransaction::factory()->createMany($stockTransactions);
     }
 }

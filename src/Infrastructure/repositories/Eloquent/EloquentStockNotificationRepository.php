@@ -57,7 +57,7 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
     public function markSent(array $notificationIds): void
     {
         LowStockNotification::query()->whereIn('notification_id', $notificationIds)
-        ->where('status', LowStockNotificationType::PENDING)
-        ->update(['status' => LowStockNotificationType::SENT]);
+            ->where('status', LowStockNotificationType::PENDING)
+            ->update(['status' => LowStockNotificationType::SENT]);
     }
 }

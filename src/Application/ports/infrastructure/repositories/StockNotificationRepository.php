@@ -29,7 +29,7 @@ interface StockNotificationRepository
     public function markSent(array $notificationIds): void;
 
     /**
-     * @param array<string> $notificationIds
+     * @param  array<string> $notificationIds
      * @return LowStockNotification[]
      */
     public function getPendingWithIds(array $notificationIds): array;

@@ -24,6 +24,7 @@ class LowStockNotification extends Model
     public function ingredientStock(): BelongsTo
     {
         return $this->belongsTo(
-            IngredientStock::class, 'ingredient_id', 'ingredient_id');
+            IngredientStock::class, 'ingredient_id', 'ingredient_id'
+        );
     }
 }

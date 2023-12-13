@@ -20,8 +20,8 @@ class StockItem
         private readonly string $name,
         private readonly int $fullQuantity,
         private int $availableQuantity,
-        readonly float $thresholdPercentage)
-    {
+        readonly float $thresholdPercentage
+    ) {
         $this->thresholdLimit = ($thresholdPercentage / 100) * $fullQuantity;
 
         if ($availableQuantity <= $this->thresholdLimit) {
@@ -36,7 +36,10 @@ class StockItem
         }
 
         $this->availableQuantity -= $quantity;
-        $this->stockTransactions[] = new StockTransaction($this->id, $quantity, 'order: ' . $orderId);
+        $this->stockTransactions[] = new StockTransaction(
+            $this->id, $quantity,
+            'order: ' . $orderId
+        );
         if ($this->availableQuantity < $this->thresholdLimit) {
             if ($this->stockStatus != StockItemStatus::LOWSTOCK) {
                 $this->stockStatus = StockItemStatus::LOWSTOCK;

@@ -28,7 +28,7 @@ class Order
     }
 
     /**
-     * @param Item[] $items
+     * @param  Item[] $items
      * @return void
      */
 

@@ -15,8 +15,7 @@ class StockTransaction
         private readonly int $ingredientId,
         private readonly int $quantity,
         private readonly string $reason
-    )
-    {
+    ) {
         $this->id = Str::uuid();
     }
 

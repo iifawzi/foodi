@@ -10,9 +10,9 @@ use Src\Domain\Types\OrderStatus;
 class OrderUseCases
 {
     /**
-     * @param Merchant $merchant
-     * @param Order $order
-     * @param StockItem[] $stockItems
+     * @param  Merchant    $merchant
+     * @param  Order       $order
+     * @param  StockItem[] $stockItems
      * @return bool
      */
     public function confirmOrder(Merchant $merchant, Order $order, array $stockItems): bool
@@ -36,7 +36,7 @@ class OrderUseCases
     }
 
     /**
-     * @param Order $order,
+     * @param Order       $order,
      * @param StockItem[] $stockItems
      */
     private function hasEnoughStock(Order $order, array $stockItems): bool

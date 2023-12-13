@@ -18,6 +18,7 @@ class Product extends Model
             IngredientStock::class,
             'product_ingredients',
             'product_id',
-            'ingredient_id')->withPivot('base_quantity');
+            'ingredient_id'
+        )->withPivot('base_quantity');
     }
 }

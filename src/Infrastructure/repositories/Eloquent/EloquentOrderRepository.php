@@ -24,18 +24,22 @@ class EloquentOrderRepository implements OrderRepository
         }
 
 
-        /** @var \App\Models\Order $orderModel */
-        $orderModel = \App\Models\Order::factory()->createOne([
+        /**
+ * @var \App\Models\Order $orderModel 
+*/
+        $orderModel = \App\Models\Order::factory()->createOne(
+            [
             "order_id" => $order->getId(),
             "status" => $order->getStatus(),
-        ]);
+            ]
+        );
 
         $orderModel->items()->createMany($items);
     }
 
     public function startTransaction(): void
     {
-       DB::beginTransaction();
+        DB::beginTransaction();
     }
 
     public function commitTransaction(): void

@@ -14,6 +14,7 @@ class LowStockNotification extends Mailable
 
     /**
      * Create a new message instance.
+     *
      * @param array{
      *     "ingredient_id": int,
      *     "ingredient_name": string,
@@ -22,7 +23,6 @@ class LowStockNotification extends Mailable
      * } $item
      *
      * @param string $merchantName
-     *
      */
     public function __construct(private readonly array $item, private readonly string $merchantName)
     {

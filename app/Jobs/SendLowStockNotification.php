@@ -46,7 +46,7 @@ class SendLowStockNotification implements ShouldQueue
 
 
     /**
-     * @param StockNotificationRepository $stockNotificationRepository
+     * @param  StockNotificationRepository $stockNotificationRepository
      * @return array{
      *     items: array{
      *         ingredient_id: int,
@@ -79,7 +79,7 @@ class SendLowStockNotification implements ShouldQueue
             }
 
             if ($available > $threshold) {
-              continue;
+                continue;
             }
             $items[] = [
                 "ingredient_id" => $ingredientId,

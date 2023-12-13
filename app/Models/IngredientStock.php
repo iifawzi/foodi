@@ -12,8 +12,10 @@ class IngredientStock extends Model
     use HasFactory;
     protected $primaryKey = "ingredient_id";
 
-    public function merchant(): BelongsTo {
+    public function merchant(): BelongsTo
+    {
         return $this->belongsTo(
-            Merchant::class, 'merchant_id', 'merchant_id');
+            Merchant::class, 'merchant_id', 'merchant_id'
+        );
     }
 }

@@ -58,7 +58,7 @@ The system is configured in a way that it can work with MySQL, Postgres and sqli
      ./vendor/bin/sail php artisan schedule:work
     ```
 
-7. Enjoy your order!
+8. Enjoy your order!
 
 ### Using Sail
 
@@ -92,15 +92,75 @@ Thr project also comes with Laravel Sail that runs mysql by default. if you wish
      ./vendor/bin/sail php artisan schedule:work
     ```
 
-## Tl;dr - Summary
+7. Enjoy your order!
 
-The system is designed to be reliable, adept at handling multiple orders concurrently, and easy to test while maintaining a high-quality standard.
+## Deep-Dive!
+
+The system is built to be dependable, handle many orders at once, and be straightforward to test while maintaining high-quality standards.
 
 ### Code Architecture
 
-The code architecture strictly adheres to good design principles, ensuring modularity and maintainability. Rigorous testing of the core components fortifies the system's reliability.
+The way I've organized the code follows `SOLID` and `Hexagonal Architecture` principles while isolating the domain layer following ddd-design, making it easy to understand and maintain.
 
-![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/80e714ac-26fa-48cf-80a6-b86257ce6c53)
+#### Files Structure
+```
+src
+├── Application
+│   ├── ports
+│   │   └── infrastructure
+│   │       ├── StockNotificationService.php
+│   │       └── repositories
+│   │           ├── MerchantRepository.php
+│   │           ├── OrderRepository.php
+│   │           ├── ProductRepository.php
+│   │           ├── StockNotificationRepository.php
+│   │           └── StockRepository.php
+│   └── services
+│       └── OrderService.php
+├── Domain
+│   ├── Entities
+│   │   ├── Ingredient.php
+│   │   ├── Item.php
+│   │   ├── Merchant.php
+│   │   ├── Order.php
+│   │   ├── StockItem.php
+│   │   └── StockTransaction.php
+│   ├── Services
+│   │   └── OrderUseCases.php
+│   └── Types
+│       ├── OrderStatus.php
+│       ├── StockItemStatus.php
+│       └── StockTransactionType.php
+└── Infrastructure
+    ├── MailingService.php
+    ├── repositories
+    │   └── Eloquent
+    │       ├── EloquentMerchantRepository.php
+    │       ├── EloquentOrderRepository.php
+    │       ├── EloquentProductRepository.php
+    │       ├── EloquentStockNotificationRepository.php
+    │       └── EloquentStockRepository.php
+    └── types
+        └── LowStockNotificationType.php
+```
+
+The business logic — the rules and processes we all understand — is encapsulated within the `Domain` directory. This is the common language that resonates with developers, stakeholders, program managers, and everyone involved in the project. It serves as a foundational agreement that unites us in our shared understanding.
+
+##### Key Components in the Domain
+- Entities
+The heart of the domain is the entities. These hold the essential data, representing real-world concepts like orders, ingredients, and the specifics of a the food we love. These entities act as the backbone of the system, defining what data we work with and how it relates.
+
+- Use Cases
+Within the `useCases`, we zoom in on specific scenarios, like creating an order. Here, use cases focus on the detailed steps and logic involved in executing a particular use case. This approach keeps our business logic organized and easy to follow.
+
+- Isolation and Dependency Management
+The domain is deliberately isolated, meaning it operates independently of any infrastructure-related logic. This isolation is intentional— it allows us to maintain a clear distinction between what our system does (business logic) and how it does it (infrastructure logic).
+
+    - Dependency Injection
+        To facilitate this separation, we adopt a dependency injection approach. Instead of the domain reaching out to infrastructure components, dependencies are injected into it, thanks to the defined interfaces. This ensures flexibility and simplifies testing, as we can substitute real implementations with mocks, as we did in the integration tests. 
+
+        In essence, the domain is a self-contained, understandable, and flexible part of the system. It represents the language we collectively speak in the project.
+
 
 ### System Architecture
 

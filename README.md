@@ -215,7 +215,8 @@ The infrastructure layer serves as the foundation for a software system, housing
 
 ### System Architecture
 
-![Untitled Diagram drawio (3)](https://github.com/iifawzi/foodi/assets/46695441/f0a880cd-3290-44e4-9e98-5ac47fa5c6e8)
+![Untitled Diagram drawio (2)](https://github.com/iifawzi/foodi/assets/46695441/a6f7d9b2-3a02-48aa-86e9-e45ec4f50dc8)
+
 
 Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, the system architecture takes into account potential challenges:
 

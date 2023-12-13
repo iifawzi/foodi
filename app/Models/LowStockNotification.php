@@ -14,11 +14,6 @@ class LowStockNotification extends Model
     protected $casts = [
         'status' => LowStockNotificationType::class
     ];
-    public function merchant(): BelongsTo
-    {
-        return $this->belongsTo(
-            MerchantRepository::class, 'merchant_id', 'merchant_id');
-    }
 
     public function ingredientStock(): BelongsTo
     {

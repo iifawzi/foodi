@@ -212,11 +212,9 @@ class OrderServiceTest extends TestCase
         $this->assertCount(2, $notifications);
         $firstNotification = $notifications[0];
         $this->assertEquals(1, $firstNotification["ingredientId"]);
-        $this->assertEquals(1000, $firstNotification["threshold"]);
 
         $secondNotification = $notifications[1];
         $this->assertEquals(3, $secondNotification["ingredientId"]);
-        $this->assertEquals(100, $secondNotification["threshold"]);
 
         // CREATING ANOTHER ORDER TO VERIFY IT WON'T BE NOTIFIED.
         $orderRequest2 = [
@@ -234,14 +232,11 @@ class OrderServiceTest extends TestCase
         $this->assertCount(3, $notifications);
         $firstNotification = $notifications[0];
         $this->assertEquals(1, $firstNotification["ingredientId"]);
-        $this->assertEquals(1000, $firstNotification["threshold"]);
 
         $secondNotification = $notifications[1];
         $this->assertEquals(3, $secondNotification["ingredientId"]);
-        $this->assertEquals(100, $secondNotification["threshold"]);
 
         $secondNotification = $notifications[2];
         $this->assertEquals(2, $secondNotification["ingredientId"]);
-        $this->assertEquals(250, $secondNotification["threshold"]);
     }
 }

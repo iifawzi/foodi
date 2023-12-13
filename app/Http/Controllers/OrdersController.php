@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\shared\Respond;
+use App\Jobs\SendLowStockNotification;
 use Illuminate\Http\JsonResponse;
 use Src\Application\services\OrderService;
 use Src\Domain\Types\OrderStatus;
@@ -17,6 +18,8 @@ class OrdersController extends Controller
     public function createOrder(CreateOrderRequest $request): JsonResponse
     {
         try {
+            $d = new SendLowStockNotification([1]);
+            $d->handle();
             ["status" => $status, "order" => $order] = $this->orderService->CreateOrder($request->toArray());
 
             if (!$status && !isset($order)) {

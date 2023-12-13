@@ -32,9 +32,9 @@ class OrdersServiceTest extends TestCase
         $order->addItems([$item]);
         $order->addItems([$item2]);
 
-        $stock1 = new StockItem(1, 1, 'beef', 50, 50, 50);
-        $stock2 = new StockItem(2, 1, 'beef', 100, 90, 50);
-        $stock3 = new StockItem(3, 1, 'beef', 60, 100, 50);
+        $stock1 = new StockItem(1, 'beef', 50, 50, 50);
+        $stock2 = new StockItem(2, 'beef', 100, 90, 50);
+        $stock3 = new StockItem(3, 'beef', 60, 100, 50);
 
         $orderService = new OrderUseCases();
         $stockItems = [$stock1, $stock2, $stock3];
@@ -63,9 +63,9 @@ class OrdersServiceTest extends TestCase
         $order->addItems([$item]);
         $order->addItems([$item2]);
 
-        $stock1 = new StockItem(1, 1, 'beef', 50, 50, 50);
-        $stock2 = new StockItem(2, 1, 'Cheese', 100, 90, 50);
-        $stock3 = new StockItem(3, 1, 'Onion', 60, 99, 50);
+        $stock1 = new StockItem(1, 'beef', 50, 50, 50);
+        $stock2 = new StockItem(2, 'Cheese', 100, 90, 50);
+        $stock3 = new StockItem(3, 'Onion', 60, 99, 50);
 
         $orderService = new OrderUseCases();
         $stockItems = [$stock1, $stock2, $stock3];
@@ -91,8 +91,8 @@ class OrdersServiceTest extends TestCase
         $order->addItems([$item]);
         $order->addItems([$item2]);
 
-        $stock1 = new StockItem(1, 1, 'Beef', 100, 100, 50);
-        $stock2 = new StockItem(2, 1, 'Cheese', 100, 90, 50);
+        $stock1 = new StockItem(1, 'Beef', 100, 100, 50);
+        $stock2 = new StockItem(2, 'Cheese', 100, 90, 50);
 
         $orderService = new OrderUseCases();
         $stockItems = [$stock1, $stock2];

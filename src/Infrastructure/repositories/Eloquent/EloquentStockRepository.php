@@ -19,7 +19,6 @@ class EloquentStockRepository implements StockRepository
         foreach ($stockItems as $stockItem) {
             $items[] = new StockItem(
                 $stockItem->ingredient_id,
-                $stockItem->merchant_id,
                 $stockItem->name,
                 $stockItem->full_quantity,
                 $stockItem->available_quantity,

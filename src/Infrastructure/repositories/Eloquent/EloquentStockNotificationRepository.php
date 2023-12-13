@@ -12,9 +12,7 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
         $dataToInsert = [];
         foreach ($stockItems as $stock) {
             $dataToInsert[] = [
-                'threshold' => $stock->getThresholdLimit(),
                 'ingredient_id' => $stock->getId(),
-                "merchant_id" => $stock->getMerchantId(),
                 "status" => "PENDING",
             ];
         }

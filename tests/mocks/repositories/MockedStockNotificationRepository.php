@@ -19,9 +19,7 @@ class MockedStockNotificationRepository implements StockNotificationRepository
         foreach ($stockItems as $stockItem) {
             $this->data[] = [
                 "ingredientId" => $stockItem->getId(),
-                "merchantId" => $stockItem->getMerchantId(),
                 "status" => LowStockNotificationType::PENDING,
-                "threshold" => $stockItem->getThresholdLimit()
             ];
         }
     }

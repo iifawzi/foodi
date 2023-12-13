@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('low_stock_notifications', function (Blueprint $table) {
             $table->id();
             $table->string("status");
-            $table->unsignedInteger("threshold");
             $table->timestamps();
-
-            $table->foreignId("merchant_id");
-            $table->foreign("merchant_id")->on("merchants")->references("merchant_id");
+            
             $table->foreignId("ingredient_id");
             $table->foreign("ingredient_id")->on("ingredient_stocks")->references("ingredient_id");
         });

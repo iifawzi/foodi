@@ -29,7 +29,13 @@ class MockedStockRepository implements StockRepository
         $stockItems = [];
         foreach ($ingredientIds as $ingredientId) {
             $ingredientData = $this->data[$ingredientId];
-            $stockItems[] = new StockItem($ingredientData["id"], $ingredientData["merchantId"], $ingredientData["name"], $ingredientData["fullQuantity"], $ingredientData["availableQuantity"], $ingredientData["thresholdPercentage"]);
+            $stockItems[] = new StockItem(
+                $ingredientData["id"],
+                $ingredientData["name"],
+                $ingredientData["fullQuantity"],
+                $ingredientData["availableQuantity"],
+                $ingredientData["thresholdPercentage"]
+            );
         }
         return $stockItems;
     }
@@ -37,7 +43,12 @@ class MockedStockRepository implements StockRepository
     public function getStockItem(int $ingredientId): StockItem
     {
         $ingredientData = $this->data[$ingredientId];
-        return new StockItem($ingredientData["id"], $ingredientData["merchantId"], $ingredientData["name"], $ingredientData["fullQuantity"], $ingredientData["availableQuantity"], $ingredientData["thresholdPercentage"]);
+        return new StockItem($ingredientData["id"],
+            $ingredientData["name"],
+            $ingredientData["fullQuantity"],
+            $ingredientData["availableQuantity"],
+            $ingredientData["thresholdPercentage"]
+        );
     }
 
     /**

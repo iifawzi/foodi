@@ -7,7 +7,7 @@ use Src\Domain\Types\StockItemStatus;
 
 class StockItem
 {
-    private int $thresholdLimit;
+    private float $thresholdLimit;
 
     /**
      * @var StockTransaction[]
@@ -46,7 +46,7 @@ class StockItem
         return $this->stockStatus;
     }
 
-    public function canConsume($quantity): bool
+    public function canConsume(int $quantity): bool
     {
         if ($quantity > $this->availableQuantity) {
             return false;
@@ -90,7 +90,7 @@ class StockItem
         return $this->name;
     }
 
-    public function getThresholdLimit(): int
+    public function getThresholdLimit(): float
     {
         return $this->thresholdLimit;
     }

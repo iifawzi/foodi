@@ -21,58 +21,65 @@ class OrderService
         private readonly StockRepository             $stockRepository,
         private readonly OrderUseCases               $orderUseCases,
         private readonly StockNotificationRepository $stockNotificationRepository,
-        private readonly StockNotificationService $stockNotificationService,
+        private readonly StockNotificationService    $stockNotificationService,
     )
     {
     }
 
     /**
-     * @param array $order
+     * @param array{
+     *     merchantId: int,
+     *     products: array{
+     *         product_id: int,
+     *         quantity: int
+     *     }
+     * } $request
      * @return array{
      *     "status": bool,
-     *     "order": Order
+     *     "order": Order|null,
+     *     "error": bool
      * }
      */
-    public function CreateOrder(array $order): array
+    public function CreateOrder(array $request): array
     {
         try {
-        $productQuantities = collect($order["products"])->pluck('quantity', 'product_id');
+            $productQuantities = collect($request["products"])->pluck('quantity', 'product_id');
 
-        $merchant = $this->merchantRepository->getMerchant(data_get($order, 'merchantId', 1));
-        $items = $this->productRepository->getItems($productQuantities);
+            $merchant = $this->merchantRepository->getMerchant(data_get($request, 'merchantId', 1));
+            $items = $this->productRepository->getItems($productQuantities);
 
-        $order = new Order();
-        $order->addItems($items);
-        $uniqueIngredientIds = $this->getUniqueIngredientIds($items);
+            $order = new Order();
+            $order->addItems($items);
+            $uniqueIngredientIds = $this->getUniqueIngredientIds($items);
 
-        $this->orderRepository->startTransaction();
-        $stockItems = $this->stockRepository->getStockItems($uniqueIngredientIds);
-        $isConfirmed = $this->orderUseCases->confirmOrder($merchant, $order, $stockItems);
+            $this->orderRepository->startTransaction();
+            $stockItems = $this->stockRepository->getStockItems($uniqueIngredientIds);
+            $isConfirmed = $this->orderUseCases->confirmOrder($merchant, $order, $stockItems);
 
-        if (!$isConfirmed) {
-            return ["status" => false, "order" => $order];
-        }
+            if (!$isConfirmed) {
+                return ["status" => false, "order" => $order, "error" => false];
+            }
 
-        $this->stockRepository->updateStocks($stockItems);
+            $this->stockRepository->updateStocks($stockItems);
 
-        $notifications = $merchant->getNotifications();
+            $notifications = $merchant->getNotifications();
 
-        if (count($notifications)) {
-            $this->stockNotificationRepository->save($notifications);
-        }
+            if (count($notifications)) {
+                $this->stockNotificationRepository->save($notifications);
+            }
 
-        $this->orderRepository->saveOrder($order);
-        $this->orderRepository->commitTransaction();
+            $this->orderRepository->saveOrder($order);
+            $this->orderRepository->commitTransaction();
 
-        if (count($notifications)) {
-            $this->stockNotificationService->notifyLowThresholdStock($notifications);
-        }
+            if (count($notifications)) {
+                $this->stockNotificationService->notifyLowThresholdStock($notifications);
+            }
 
-        return ["status" => true, "order" => $order];
+            return ["status" => true, "order" => $order, "error" => false];
         } catch (\Exception $e) {
             report($e);
             $this->orderRepository->rollbackTransaction();
-            return ["status" => false, "order" => null];
+            return ["status" => false, "order" => null, "error" => true];
         }
     }
 

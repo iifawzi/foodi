@@ -17,9 +17,9 @@ class OrdersController extends Controller
     public function createOrder(CreateOrderRequest $request): JsonResponse
     {
         try {
-            ["status" => $status, "order" => $order] = $this->orderService->CreateOrder($request->toArray());
+            ["status" => $status, "order" => $order, "error" => $error] = $this->orderService->CreateOrder($request->toArray());
 
-            if (!$status && !isset($order)) {
+            if (!$status && $error) {
                 return Respond::Error(423, 'Sorry, we have some issues in the kitchen');
             }
 

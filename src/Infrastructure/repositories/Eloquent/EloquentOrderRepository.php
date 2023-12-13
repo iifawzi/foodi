@@ -22,10 +22,15 @@ class EloquentOrderRepository implements OrderRepository
                 "order_id" => "e6fe146e-77db-4869-8921-5761560e3bfa",
             ];
         }
-        \App\Models\Order::factory()->createOne([
+
+
+        /** @var \App\Models\Order $orderModel */
+        $orderModel = \App\Models\Order::factory()->createOne([
             "order_id" => $order->getId(),
             "status" => $order->getStatus(),
-        ])->items()->createMany($items);
+        ]);
+
+        $orderModel->items()->createMany($items);
     }
 
     public function startTransaction(): void

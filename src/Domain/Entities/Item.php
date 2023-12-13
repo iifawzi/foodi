@@ -14,7 +14,7 @@ class Item
         private readonly int $id,
         private readonly string $name,
         private readonly int $unitPrice,
-        private readonly string $quantity)
+        private readonly int $quantity)
     {
         $this->totalPrice = $this->unitPrice * $this->quantity;
     }
@@ -25,7 +25,7 @@ class Item
     }
 
     /**
-     * @returns array<int, Ingredient>
+     * @return array<int, Ingredient>
      */
     public function getIngredients(): array
     {
@@ -42,7 +42,7 @@ class Item
         return $this->name;
     }
 
-    public function getQuantity(): string
+    public function getQuantity(): int
     {
         return $this->quantity;
     }

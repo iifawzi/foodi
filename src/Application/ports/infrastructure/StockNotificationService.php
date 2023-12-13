@@ -10,10 +10,11 @@ interface StockNotificationService
 {
     /**
      * @param array{
-     *       notification_id: UuidInterface,
-     *       status: LowStockNotificationType,
-     *       ingredient_id: int
-     *   } $notifications
+     *      notification_id: UuidInterface,
+     *      status: LowStockNotificationType,
+     *      ingredient_id: int
+     *  }[] $notifications
+     * /
      */
     public function notifyLowThresholdStock(array $notifications): void;
 }

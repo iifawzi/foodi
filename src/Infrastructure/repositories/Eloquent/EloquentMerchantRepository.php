@@ -9,7 +9,8 @@ class EloquentMerchantRepository implements MerchantRepository
 {
     public function getMerchant(int $merchantId): Merchant
     {
-        $merchant = \App\Models\Merchant::query()->find($merchantId);
-        return new Merchant($merchant->merchant_id, $merchant->name, $merchant->email) ;
+        /** @var \App\Models\Merchant $merchant */
+        $merchant = \App\Models\Merchant::query()->findOrFail($merchantId);
+        return new Merchant($merchant["merchant_id"], $merchant["name"], $merchant["email"]) ;
     }
 }

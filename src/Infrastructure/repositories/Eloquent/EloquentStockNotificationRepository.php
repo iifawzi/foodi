@@ -5,6 +5,7 @@ namespace Src\Infrastructure\repositories\Eloquent;
 use App\Models\LowStockNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\UuidInterface;
 use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
 use Src\Infrastructure\types\LowStockNotificationType;
 
@@ -23,6 +24,9 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
         LowStockNotification::factory()->createMany($dataToInsert);
     }
 
+    /**
+     * @return array<int>
+     */
     public function getStuckNotifications(): array
     {
         DB::beginTransaction();

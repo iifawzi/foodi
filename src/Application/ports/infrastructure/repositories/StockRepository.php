@@ -6,6 +6,7 @@ use Src\Domain\Entities\StockItem;
 interface StockRepository
 {
     /**
+     * @param array<int> $ingredientIds
      * @return StockItem[]
      */
     public function getStockItems(array $ingredientIds): array;

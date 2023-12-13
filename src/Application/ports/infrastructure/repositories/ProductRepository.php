@@ -7,7 +7,7 @@ use Src\Domain\Entities\Item;
 interface ProductRepository
 {
     /**
-     * @param Collection $productQuantities
+     * @param Collection<int, int> $productQuantities
      * @return Item[]
      */
     public function getItems(Collection $productQuantities): array;

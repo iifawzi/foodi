@@ -58,7 +58,7 @@ class Order
     }
 
     /**
-     * @returns Item[]
+     * @return Item[]
      */
     public
     function getItems(): array

@@ -18,15 +18,15 @@ can use the following levels for seeding the database:
 -   1kg Onion
 
 When a customer makes an order that includes a Burger. The system needs to update the
-stock of each of the ingredients so it reflects the amounts consumed.
-Also when any of the ingredients stock level reaches 50%, the system should send an
-email message to alert the merchant they need to buy more of this ingredient.
+the stock of each of the ingredients so it reflects the amounts consumed.
+Also when any of the ingredients' stock level reaches 50%, the system should send an
+email message to alert the merchant that they need to buy more of this ingredient.
 
-In the sections below, I will explain the requirements have been approached, the architecture, decisions and thoughts.
+In the sections below, I will explain the requirements that have been approached, the architecture, decisions, and thoughts.
 
 ## Installation
 
-The system is configured in a way that it can work with MySQL, Postgres and sqlite. if you're willing to run it manually you can follow the following steps:
+The system is configured in a way that it can work with MySQL, Postgres, and SQLite. if you're willing to run it manually you can follow the following steps:
 
 1. Install composer dependencies:
 
@@ -39,12 +39,12 @@ The system is configured in a way that it can work with MySQL, Postgres and sqli
     cp .env.example .env
     ```
 3. Configure the database connections as you wish
-4. Configure the smtp mailing server for mailing notifications.
+4. Configure the SMTP mailing server for mailing notifications.
 5. Run database migrations and seeders 
     ```
     php artisan migrate --seed
     ```
-6. Run the application in your preferred way, either it's `valet`, `serve` or any other way. 
+6. Run the application in your preferred way, either it's `valet`, `serve`, or any other way. 
     ```bash
     php artisan serve
     ```
@@ -62,13 +62,13 @@ The system is configured in a way that it can work with MySQL, Postgres and sqli
 
 ### Using Sail
 
-Thr project also comes with Laravel Sail that runs mysql by default. if you wish you can follow the following steps: 
+The project also comes with Laravel Sail that runs mysql by default. if you wish you can follow the following steps: 
 
 1. Create your configuration file `.env`:
     ```
     cp .env.example .env
     ```
-2. Configure the smtp mailing server for mailing notifications.
+2. Configure the SMTP mailing server for mailing notifications.
 
 3. Start the Docker containers:
 
@@ -100,9 +100,10 @@ The system is built to be dependable, able to handle many orders at once, and be
 
 ### Code Architecture
 
-![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/80e714ac-26fa-48cf-80a6-b86257ce6c53)
+![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/36370bab-b3a9-4677-9471-eb21711daac1)
 
-The way I've organized the code follows `SOLID` and `Hexagonal Architecture` principles while isolating the domain layer following ddd-design, making it easy to understand and maintain.
+
+The way I've organized the code follows `SOLID` and `Hexagonal Architecture principles while isolating the domain layer following `ddd-design`, making it easy to understand and maintain.
 
 #### Files Structure
 ```
@@ -152,7 +153,7 @@ The business logic — the rules and processes we all understand — is encapsul
 
 - Entities:
 
-The heart of the domain is the entities. These hold the essential data, representing real-world concepts like orders, ingredients, and the specifics of a the food we love. These entities act as the backbone of the system, defining what data we work with and how it relates.
+The heart of the domain is the entities. These hold essential data, representing real-world concepts like orders, ingredients, and the specifics of the food we love. These entities act as the backbone of the system, defining what data we work with and how it relates.
 
 - Use Cases:
   
@@ -173,7 +174,7 @@ where the entire business logic is tested using `in-memory` database. More on th
 https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/tests/Integration/Application/OrderServiceTest.php#L40-L54
 
 
-The actual implementation of the repositories is on the infrastructure layer, where we can simply decide what to use, are we using
+The actual implementation of the repositories is on the infrastructure layer, where we can decide what to use, whether are we using `Eloquent` or any other solution, it doesn't matter. as long as they implement the repositories interfaces. 
 
 ### System Architecture
 

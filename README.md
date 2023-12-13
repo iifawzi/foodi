@@ -96,7 +96,7 @@ Thr project also comes with Laravel Sail that runs mysql by default. if you wish
 
 ## Deep-Dive!
 
-The system is built to be dependable, handle many orders at once, and be straightforward to test while maintaining high-quality standards.
+The system is built to be dependable, able to handle many orders at once, and be straightforward to test while maintaining high-quality standards.
 
 ### Code Architecture
 

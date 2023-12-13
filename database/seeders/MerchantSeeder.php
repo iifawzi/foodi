@@ -15,6 +15,7 @@ class MerchantSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->TruncateTable("merchants");
         $merchants = [
             [
                 'merchant_id' => 1,
@@ -33,7 +34,6 @@ class MerchantSeeder extends Seeder
             ]
         ];
 
-        $this->TruncateTable("merchants");
         DB::table("merchants")->insert($merchants);
     }
 }

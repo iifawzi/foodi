@@ -14,6 +14,7 @@ class IngredientStockSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->TruncateTable("ingredient_stocks");
         $ingredientsStock = [
             [
                 'ingredient_id' => 1,
@@ -44,7 +45,6 @@ class IngredientStockSeeder extends Seeder
             ],
         ];
 
-        $this->TruncateTable("ingredient_stocks");
         DB::table('ingredient_stocks')->insert($ingredientsStock);
     }
 }

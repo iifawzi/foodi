@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("type");
             $table->timestamps();
 
-            $table->foreignId("ingredient_id");
+            $table->foreignId("ingredient_id")->type("integer");
             $table->foreign("ingredient_id")->on("ingredient_stocks")->references("ingredient_id");
         });
     }

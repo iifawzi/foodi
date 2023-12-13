@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignUuid('order_id');
             $table->foreign('order_id')->on('orders')->references('order_id');
 
-            $table->foreignId('product_id');
+            $table->foreignId('product_id')->type("integer");
             $table->foreign('product_id')->on('products')->references('product_id');
         });
     }

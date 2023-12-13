@@ -11,7 +11,13 @@ use Tests\TestCase;
 class OrdersTest extends TestCase
 {
     use RefreshDatabase;
-    protected $seed = true;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function test_returns_422_when_validation_error(): void
     {
         $data = [
@@ -72,6 +78,7 @@ class OrdersTest extends TestCase
 
     public function test_returns_422_when_merchant_doesnt_exist(): void
     {
+        $this->seed();
         $data = [
             "merchantId" => 1000,
             "products" => [
@@ -168,6 +175,7 @@ class OrdersTest extends TestCase
 
     public function test_returns_200_when_insufficient_ingredients(): void
     {
+        $this->seed();
         $data = [
             "merchantId" => 1,
             "products" => [
@@ -182,6 +190,5 @@ class OrdersTest extends TestCase
         $response->assertJsonFragment(["Sorry, we have a shortage in the ingredients."]);
         $this->assertDatabaseCount('orders', 0);
         $this->assertDatabaseCount('order_items', 0);
-
     }
 }

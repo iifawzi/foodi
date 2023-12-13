@@ -15,6 +15,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->TruncateTable("products");
         $productsData = [
             [
                 "product_id" => 1,
@@ -39,7 +40,6 @@ class ProductSeeder extends Seeder
             ]
         ];
 
-        $this->TruncateTable("products");
         foreach ($productsData as $productData) {
             $product = Product::create($productData);
             // Attach ingredients

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ingredient_stocks', function (Blueprint $table) {
-            $table->unsignedBigInteger('ingredient_id')->unsigned()->autoIncrement();
+            $table->unsignedInteger('ingredient_id')->autoIncrement();
             $table->string('name');
             $table->text('description');
             $table->unsignedInteger('available_quantity');
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('min_threshold_percentage');
             $table->timestamps();
 
-            $table->foreignId('merchant_id');
+            $table->foreignId('merchant_id')->type("integer");
             $table->foreign("merchant_id")->on('merchants')->references("merchant_id");
         });
     }

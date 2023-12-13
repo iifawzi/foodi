@@ -6,6 +6,7 @@ use Ramsey\Uuid\UuidInterface;
 use Src\Domain\Entities\StockItem;
 use Src\Infrastructure\types\LowStockNotificationType;
 
+
 interface StockNotificationService
 {
     /**

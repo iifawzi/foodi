@@ -33,6 +33,6 @@ trait SeederHelper
 
     protected function TruncateTable($table)
     {
-        DB::TABLE($table)->truncate();
+        DB::TABLE($table)->delete();
     }
 }

@@ -1,6 +1,6 @@
 # Foodi Orders!
 
-# Requirements 📺
+## Requirements 📺
 
 A Burger (Product) may have several ingredients:
 
@@ -22,7 +22,7 @@ email message to alert the merchant they need to buy more of this ingredient.
 
 In the sections below, I will explain the requirements have been approached, the architecture, decisions and thoughts.
 
-# Installation
+## Installation
 
 The system is configured in a way that it can work with MySQL, Postgres and sqlite. if you're willing to run it manually you can follow the following steps:
 
@@ -58,12 +58,11 @@ The system is configured in a way that it can work with MySQL, Postgres and sqli
 
 7. Enjoy your order!
 
-## Using Sail
+### Using Sail
 
 Thr project also comes with Laravel Sail that runs mysql by default. if you wish you can follow the following steps: 
 
 1. Create your configuration file `.env`:
-
     ```
     cp .env.example .env
     ```
@@ -91,17 +90,17 @@ Thr project also comes with Laravel Sail that runs mysql by default. if you wish
      ./vendor/bin/sail php artisan schedule:work
     ```
 
-# Tl;dr - Summary
+## Tl;dr - Summary
 
 The system is designed to be reliable, adept at handling multiple orders concurrently, and easy to test while maintaining a high-quality standard.
 
-## Code Architecture
+### Code Architecture
 
 The code architecture strictly adheres to good design principles, ensuring modularity and maintainability. Rigorous testing of the core components fortifies the system's reliability.
 
 ![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/80e714ac-26fa-48cf-80a6-b86257ce6c53)
 
-## System Architecture
+### System Architecture
 
 Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, the system architecture takes into account potential challenges:
 

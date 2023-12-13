@@ -3,11 +3,10 @@
 namespace Tests\mocks\repositories;
 
 use Ramsey\Uuid\UuidInterface;
-use Src\Application\ports\infrastructure\repositories\StockNotificationRepository;
-use Src\Domain\Entities\StockItem;
 use Src\Infrastructure\types\LowStockNotificationType;
+use Tests\mocks\types\StockNotificationRepositoryTest;
 
-class MockedStockNotificationRepository implements StockNotificationRepository
+class MockedStockNotificationRepository implements StockNotificationRepositoryTest
 {
     private array $data = [];
 

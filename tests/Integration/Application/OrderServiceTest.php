@@ -15,14 +15,16 @@ use Tests\mocks\repositories\MockedOrderRepository;
 use Tests\mocks\repositories\MockedProductRepository;
 use Tests\mocks\repositories\MockedStockNotificationRepository;
 use Tests\mocks\repositories\MockedStockRepository;
+use Tests\mocks\types\StockNotificationRepositoryTest;
+use Tests\mocks\types\StockRepositoryTest;
 use Tests\TestCase;
 
 class OrderServiceTest extends TestCase
 {
     public \Src\Application\services\OrderService $orderService;
-    public StockRepository $stockRepository;
+    public StockRepositoryTest $stockRepository;
     public OrderRepository $orderRepository;
-    public StockNotificationRepository $stockNotificationRepository;
+    public StockNotificationRepositoryTest $stockNotificationRepository;
     public MockInterface $stockNotificationService;
 
     public function setUp(): void

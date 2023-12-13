@@ -211,7 +211,7 @@ This gives us the flexibility of choosing any adapter in the infra, whether it's
 
 ##### Infrastructure layer: 
 
-The infrastructure layer is where the `adapters` are implemented, here you can find all the `eloquent` implementations of the repositories as well as the mailing service implementation. The driving adapters ( controllers ) are defined in the core directory `app`. 
+The infrastructure layer serves as the foundation for a software system, housing implementations of the adapters both, the `repositories` and the `mailing service`. In this layer, you'll find the `eloquent` repositories implementations. on the other side, the `driven` adapters are defined in the core directory `app`. The infrastructure layer handles the technical and operational aspects that support the application's functionality.
 
 ### System Architecture
 

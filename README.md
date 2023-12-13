@@ -94,6 +94,26 @@ The project also comes with Laravel Sail that runs mysql by default. if you wish
 
 7. Enjoy your order!
 
+## tl;dr
+
+### Create Order Endpoint: 
+
+```
+POST /api/v1/orders
+```
+Request: 
+```json
+{
+    "merchantId": 1,
+    "products": [
+        {
+            "product_id": 1,
+            "quantity": 1
+        }
+    ]
+}
+```
+
 ## Deep-Dive!
 
 The system is built to be dependable, able to handle many orders at once, and be straightforward to test while maintaining high-quality standards.
@@ -157,7 +177,7 @@ The heart of the domain is the entities. These hold essential data, representing
 
 - Use Cases:
   
-Within the `useCases`, we zoom in on specific scenarios, like creating an order. Here, use cases focus on the detailed steps and logic involved in executing a particular use case. This approach keeps our business logic organized and easy to follow.
+Within the `use cases`, we zoom in on specific scenarios, like creating an order. Here, use cases focus on the detailed steps and logic involved in executing a particular use case. This approach keeps our business logic organized and easy to follow.
 
 - Isolation and Dependency Management
   
@@ -178,12 +198,12 @@ The actual implementation of the repositories is on the infrastructure layer, wh
 
 ##### Application layer: 
 
-It mediates communication between core business logic (domain) and external systems (infrastructure), where i'm defining the `driven` ports, for external components to interact with the application layer.
+It mediates communication between core business logic (domain) and external systems (infrastructure), when ere I'm defining the `driven` ports, for external components to interact with the application layer.
 
 The application layer is the layer that's responsible for the communication between the domain and the infrastructure, it defines the `driven` and `driving` ports. 
-for simplification in this project, I didn't implement any `driving` ports, the application service communicates directly with the domain's service. `driven` ports are defined in the repositories directory, and the mail-service. these ports must be implemented by anyone willing to interact/to be managed with/by the domain. 
+for simplification in this project, I didn't implement any `driving` ports, the application service communicates directly with the domain's service. `driven` ports are defined in the repositories directory and the mail service. these ports must be implemented by anyone willing to interact/to be managed with/by the domain. 
 
-The application services are also infrastructure agnostic, hence you will notice that no `HTTP` errors are thrown for example, but instead domain responses are returned. 
+The application services are also infrastructure agnostic, hence you will notice that no `HTTP` errors are thrown for example, but instead, domain responses are returned. 
 
 https://github.com/iifawzi/foodi/blob/878ce9645f1655b725797233e122e71c468d004a/src/Application/services/OrderService.php#L57-L76
 
@@ -191,7 +211,7 @@ This gives us the flexibility of choosing any adapter in the infra, whether it's
 
 ##### Infrastructure layer: 
 
-Infrastructure layer is where the `adapters` are implements, here you can find all the `eloquent` implementations of the repositories as well as the mailing service implementation. The driving adapters ( controllers ) are defined in the core directory `app`. 
+The infrastructure layer is where the `adapters` are implemented, here you can find all the `eloquent` implementations of the repositories as well as the mailing service implementation. The driving adapters ( controllers ) are defined in the core directory `app`. 
 
 ### System Architecture
 

@@ -25,7 +25,7 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
     }
 
     /**
-     * @return array<int>
+     * @return array<string>
      */
     public function getStuckNotifications(): array
     {

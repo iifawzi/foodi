@@ -2,6 +2,7 @@
 
 namespace Src\Application\ports\infrastructure\repositories;
 
+use App\Models\LowStockNotification;
 use Ramsey\Uuid\UuidInterface;
 use Src\Infrastructure\types\LowStockNotificationType;
 
@@ -18,22 +19,18 @@ interface StockNotificationRepository
     public function save(array $notifications): void;
 
     /**
-     * @return array<int>
+     * @return array<string>
      */
     public function getStuckNotifications(): array;
 
     /**
-     * @param array<int> $notificationIds
+     * @param array<string> $notificationIds
      */
     public function markSent(array $notificationIds): void;
 
     /**
-     * @param array<int> $notificationIds
-     * @return array{
-     *       notification_id: UuidInterface,
-     *       status: LowStockNotificationType,
-     *       ingredient_id: int
-     *   }[]
+     * @param array<string> $notificationIds
+     * @return LowStockNotification[]
      */
     public function getPendingWithIds(array $notificationIds): array;
 }

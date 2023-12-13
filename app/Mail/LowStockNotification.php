@@ -15,8 +15,8 @@ class LowStockNotification extends Mailable
     /**
      * Create a new message instance.
      * @param array{
-     *     "merchantName": string,
-     *     "ingredientName": string,
+     *     "ingredient_id": int,
+     *     "ingredient_name": string,
      *     "threshold": int,
      *     "current": int
      * } $item

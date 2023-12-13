@@ -13,12 +13,16 @@ use Src\Application\ports\infrastructure\repositories\StockNotificationRepositor
 class SendLowStockNotification implements ShouldQueue
 {
     public int $tries = 3;
+
+    /**
+     * @var array|int[]
+     */
     public array $backoff = [60, 180];
 
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * Create a new job instance.
+     * @param string[] $ids
      */
     public function __construct(public readonly array $ids)
     {
@@ -41,6 +45,19 @@ class SendLowStockNotification implements ShouldQueue
     }
 
 
+    /**
+     * @param StockNotificationRepository $stockNotificationRepository
+     * @return array{
+     *     items: array{
+     *         ingredient_id: int,
+     *         ingredient_name: string,
+     *         threshold: int,
+     *         current: int,
+     *     }[] ,
+     *    email: string,
+     *    name: string
+     * }
+     */
     private function getTheNotification(StockNotificationRepository $stockNotificationRepository): array
     {
         $notifications = $stockNotificationRepository->getPendingWithIds($this->ids);

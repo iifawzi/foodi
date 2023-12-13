@@ -14,6 +14,9 @@ class StockTransaction extends Model
     protected $primaryKey = "transaction_id";
     protected $keyType = 'string';
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         "type" => StockTransactionType::class,
     ];

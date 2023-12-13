@@ -13,6 +13,9 @@ class Order extends Model
     protected $primaryKey = "order_id";
     protected $keyType = 'string';
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'status' => OrderStatus::class
     ];

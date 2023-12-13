@@ -17,9 +17,9 @@ class OrdersController extends Controller
     public function createOrder(CreateOrderRequest $request): JsonResponse
     {
         try {
-            ["status" => $status, "order" => $order, "error" => $error] = $this->orderService->CreateOrder($request->toArray());
+            ["status" => $status, "order" => $order] = $this->orderService->CreateOrder($request->toArray());
 
-            if (!$status && $error) {
+            if (!isset($order) && !$status) {
                 return Respond::Error(423, 'Sorry, we have some issues in the kitchen');
             }
 
@@ -28,7 +28,6 @@ class OrdersController extends Controller
             }
 
             return Respond::Success(200, 'Sorry, we have a shortage in the ingredients.');
-
         } catch (\Exception $e) {
             return Respond::Error(500, $e->getMessage());
         }

@@ -1,0 +1,26 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Cannot call method getStatus\\(\\) on Src\\\\Domain\\\\Entities\\\\Order\\|null\\.$#"
+			count: 1
+			path: app/Http/Controllers/OrdersController.php
+
+		-
+			message: "#^Parameter \\#1 \\$request of method Src\\\\Application\\\\services\\\\OrderService\\:\\:CreateOrder\\(\\) expects array\\{merchantId\\: int, products\\: array\\{product_id\\: int, quantity\\: int\\}\\}, array given\\.$#"
+			count: 1
+			path: app/Http/Controllers/OrdersController.php
+
+		-
+			message: "#^Method App\\\\Http\\\\Middleware\\\\RedirectIfAuthenticated\\:\\:handle\\(\\) should return Symfony\\\\Component\\\\HttpFoundation\\\\Response but returns Illuminate\\\\Http\\\\RedirectResponse\\|Illuminate\\\\Routing\\\\Redirector\\.$#"
+			count: 1
+			path: app/Http/Middleware/RedirectIfAuthenticated.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Routing\\\\ResponseFactory\\|Illuminate\\\\Http\\\\Response\\:\\:json\\(\\)\\.$#"
+			count: 2
+			path: app/Http/shared/Respond.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Models\\\\LowStockNotification\\:\\:\\$ingredientStock\\.$#"
+			count: 1
+			path: app/Jobs/SendLowStockNotification.php

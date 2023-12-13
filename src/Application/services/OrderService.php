@@ -37,7 +37,6 @@ class OrderService
      * @return array{
      *     "status": bool,
      *     "order": Order|null,
-     *     "error": bool
      * }
      */
     public function CreateOrder(array $request): array

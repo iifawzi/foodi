@@ -25,7 +25,7 @@ class CheckMissedNotifications extends Command
     /**
      * Execute the console command.
      */
-    public function handle(StockNotificationRepository $stockNotificationRepository)
+    public function handle(StockNotificationRepository $stockNotificationRepository): void
     {
         $notificationIds = $stockNotificationRepository->getStuckNotifications();
         if (count($notificationIds)) {

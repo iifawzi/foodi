@@ -295,4 +295,4 @@ When it comes to the quality, PHPStan knows better. PHPStan for used for static 
 
 ## Thank you! 
 
-Thank you for reading all of this, What makes a great code base and improves it, is having feedback from colleagues and experienced people like YOU (YES, the reader)👨🏻‍💻. if you came by this, would love to discuss different approaches and opinions with you. 
+Thank you for reading all of this, What makes a great code base and improves it, is having feedback from colleagues and experienced people like YOU (YES, the reader)👨🏻‍💻. if you came by this, I would love to hear your opinions/feedback and discuss different approaches, with you. 

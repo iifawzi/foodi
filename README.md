@@ -22,11 +22,11 @@ the stock of each of the ingredients so it reflects the amounts consumed.
 Also when any of the ingredients' stock level reaches 50%, the system should send an
 email message to alert the merchant that they need to buy more of this ingredient.
 
-In the sections below, I will explain the requirements that have been approached, the architecture, decisions, and thoughts.
+In the sections below, I will explain the architecture, decisions, and thoughts.
 
 ## Installation
 
-The system is configured in a way that it can work with MySQL, Postgres, and SQLite. if you're willing to run it manually you can follow the following steps:
+The system is configured in a way that it can work with `MySQL`, `Postgres`, and `SQLite`. if you're willing to run it manually you can follow the following steps:
 
 1. Install composer dependencies:
 
@@ -64,7 +64,7 @@ The system is configured in a way that it can work with MySQL, Postgres, and SQL
 
 ### Using Sail
 
-The project also comes with Laravel Sail that runs mysql by default. if you wish you can follow the following steps:
+The project also comes with Laravel Sail that runs `MySQL` by default. if you wish, you can follow the following steps:
 
 1. Install composer dependencies:
 
@@ -195,6 +195,10 @@ Within the `use cases`, we zoom in on specific scenarios, like creating an order
 
 The domain is deliberately isolated, meaning it operates independently of any infrastructure-related logic. This isolation is intentional— it allows us to maintain a clear distinction between what our system does (business logic) and how it does it (infrastructure logic).
 https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/src/Application/services/OrderService.php#L15-L26
+
+Dependencies are inverted, the service is communicating with the interfaces, and thanks to the Service providers, they're injected. 
+
+https://github.com/iifawzi/foodi/blob/dbb5593ed7f34d5b0d6c237c870ca5e8f64fba39/app/Providers/AppServiceProvider.php#L32-L42
 
 -   Dependency Injection:
 

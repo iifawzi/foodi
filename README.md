@@ -136,13 +136,13 @@ The system is built to be dependable, able to handle many orders at once, and be
 
 Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, the system architecture takes into account potential challenges:
 
--   Concurrency Challenge: when multiple orders are happening at once, there's a chance they could all think there are enough ingredients, leading to issues like overselling or running out of stock.
+-   `Concurrency` Challenge: when multiple orders are happening at once, there's a chance they could all think there are enough ingredients, leading to issues like overselling or running out of stock.
 
 -   Mailing Service Reliability: Proactive measures are in place to address potential issues with sending emails. This includes scenarios where the mailing service is non-operational or the mailing queue experiences downtime.
 
 For the concurrency challenge it depends on a lot of factors, what the business is expecting? is it required to respond immediately to the user? or can we `queue` it and respond later with either confirmation or cancellation? I chose to respond immediately and synchronously.
 
-to handle this, I used transactions with exclusive locks. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. in addition to that, an exclusive lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
+to handle this, I used `transactions` with `exclusive locks`. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. in addition to that, an exclusive lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
 
 https://github.com/iifawzi/foodi/blob/bf18902bd3a1d7f1a07700d68ceaf0feda75d472/src/Infrastructure/repositories/Eloquent/EloquentStockRepository.php#L16
 
@@ -150,23 +150,23 @@ on the other side, for second challenge, it's critical to notify the merchant ab
 
 Initially, the dispatcher was kept outside of the transaction to avoid hindering order flow. But, what if the system went down after order confirmation or if the notification queue was unavailable? This raised concerns about potential data loss.
 
-- Transactional Outbox:
+- `Transactional Outbox`:
 To ensure data integrity, the idea of an `outbox` table was introduced. Besides keeping the dispatcher separate, now, the notification log itself is part of the actual transactions. When an order is confirmed, the system logs the notification details in an `low_stock_notification` table if any ingredients ran low. If everything runs smoothly, this log is committed with the transaction. Later, when the worker performs the send mail action, it marks it as `SENT`. otherwise, it's still pending. 
 
 now what happens for pending notifications if they stuck?
 
-- Scheduler for Resilience:
+- `Scheduler for Resilience`:
 To handle scenarios where the queue might be down or the system faces disruptions after order confirmation - notifications are still pending in db - a scheduler was implemented. This scheduler regularly checks the `low_stock_notification`, specifically the outbox table, every 15 minutes. If it discovers any stuck notifications (those not marked as SENT, hasn't been updated for 30 min ), it dispatches them to the queue for processing.
 
 We also needed to keep in mind that it might fail for the second time, we need to ensure that the job is dispatched only once. for that, we're retrieving and updating the updated_at in a transaction, so we're sure the logic that pulls from db, doesn't pull it twice after it passes 30 min. 
 
 https://github.com/iifawzi/foodi/blob/a7691f72648df499dfbcb219960a14081ed5ef8b/src/Infrastructure/repositories/Eloquent/EloquentStockNotificationRepository.php#L30-L47
 
-This way, we're always sure that it can self-recover from failures, but still, if it can go wrong, it it will. We need to keep in account that a job might for any reason be dispatched twice. We don't need to send the email twice ("Idempotency"). For this, the job logic is not only retrieving by the notification id, but it also find by the status, and it update it immediately when sent. 
+This way, we're always sure that it can self-recover from failures, but still, if it can go wrong, it it will. We need to keep in account that a job might for any reason be dispatched twice. We don't need to send the email twice `Idempotency`. For this, the job logic is not only retrieving by the notification id, but it also find by the status, and it update it immediately when sent. 
 
 https://github.com/iifawzi/foodi/blob/a7691f72648df499dfbcb219960a14081ed5ef8b/src/Infrastructure/repositories/Eloquent/EloquentStockNotificationRepository.php#L49-L55
 
-Some race conditions might still happen, the mail services usually can ensure idempotency as well, ensuring they're not sending the email twice. 
+Some race conditions might still happen, the mail services usually can ensure `idempotency` as well, ensuring they're not sending the email twice. 
 
 ### Code Architecture
 

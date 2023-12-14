@@ -31,7 +31,7 @@ The system is configured in a way that it can work with MySQL, Postgres, and SQL
 1. Install composer dependencies:
 
     ```bash
-    composer update
+    composer install
     ```
 
 2. Create your configuration file `.env`:
@@ -66,10 +66,18 @@ The system is configured in a way that it can work with MySQL, Postgres, and SQL
 
 The project also comes with Laravel Sail that runs mysql by default. if you wish you can follow the following steps:
 
-1. Create your configuration file `.env`:
+1. Install composer dependencies:
+
+    ```bash
+    composer install
+    ```
+
+2. Create your configuration file `.env`:
+
     ```
     cp .env.example .env
     ```
+
 2. Configure the SMTP mailing server for mailing notifications.
 
 3. Start the Docker containers:

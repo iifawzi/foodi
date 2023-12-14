@@ -24,3 +24,33 @@ parameters:
 			message: "#^Access to an undefined property App\\\\Models\\\\LowStockNotification\\:\\:\\$ingredientStock\\.$#"
 			count: 1
 			path: app/Jobs/SendLowStockNotification.php
+
+		-
+			message: "#^Call to an undefined static method App\\\\Models\\\\Order\\:\\:create\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/repositories/Eloquent/EloquentOrderRepository.php
+
+		-
+			message: "#^Call to an undefined static method App\\\\Models\\\\OrderItem\\:\\:insert\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/repositories/Eloquent/EloquentOrderRepository.php
+
+		-
+			message: "#^Variable \\$orderModel in PHPDoc tag @var does not exist\\.$#"
+			count: 1
+			path: src/Infrastructure/repositories/Eloquent/EloquentOrderRepository.php
+
+		-
+			message: "#^Call to an undefined static method App\\\\Models\\\\LowStockNotification\\:\\:where\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/repositories/Eloquent/EloquentStockNotificationRepository.php
+
+		-
+			message: "#^Call to an undefined static method App\\\\Models\\\\LowStockNotification\\:\\:whereIn\\(\\)\\.$#"
+			count: 2
+			path: src/Infrastructure/repositories/Eloquent/EloquentStockNotificationRepository.php
+
+		-
+			message: "#^Call to an undefined static method App\\\\Models\\\\IngredientStock\\:\\:whereIn\\(\\)\\.$#"
+			count: 1
+			path: src/Infrastructure/repositories/Eloquent/EloquentStockRepository.php

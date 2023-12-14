@@ -281,3 +281,9 @@ php artisan test --coverage-html /coverage
 ```
 
 When it comes to the quality, PHPStan knows better. PHPStan for used for static analysis to enforce accurate typings and coding standards. Additionally, both PHPStan and PHPUnit are integrated into the Continuous Integration pipeline, triggering checks whenever any PHP file is pushed on main. 
+
+<img width="1353" alt="image" src="https://github.com/iifawzi/foodi/assets/46695441/fdc98f09-cf5d-4e65-8d80-1f10e4e6052d">
+
+## Thank you! 
+
+Thank you for reading all of this, What makes a great code base and improves it, is having feedback from colleagues and experienced people like YOU (YES, the reader)👨🏻‍💻. if you came by this, would love to discuss different approaches and opinions with you. 

@@ -142,7 +142,9 @@ Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, th
 
 For the concurrency challenge it depends on a lot of factors, what the business is expecting? is it required to respond immediately to the user? or can we `queue` it and respond later with either confirmation or cancellation? I chose to respond immediately and synchronously.
 
-to handle this, I used `transactions` with `exclusive locks`. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. in addition to that, an exclusive lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
+to handle this, I used `transactions` with `exclusive locks`. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. 
+
+In addition to that, an `exclusive` lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
 
 https://github.com/iifawzi/foodi/blob/bf18902bd3a1d7f1a07700d68ceaf0feda75d472/src/Infrastructure/repositories/Eloquent/EloquentStockRepository.php#L16
 

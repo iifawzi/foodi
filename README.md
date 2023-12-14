@@ -241,3 +241,17 @@ To ensure data integrity, the idea of a `outbox` table was introduced. Unlike ke
 
 - Scheduler for Resilience:
 To handle scenarios where the queue might be down or the system faces disruptions after order confirmation, a scheduler was implemented. This scheduler regularly checks the `low_stock_notification`, specifically the outbox table, every 30 minutes. If it discovers any stuck notifications (those not marked as SENT), it dispatches them to the queue for processing.
+
+### Testing and Quality - Continuous Integration.
+
+In the collaborative landscape of open source, I've gleaned invaluable insights into the pivotal role tests play. They not only enhance the reliability of code but also foster a collaborative and sustainable development environment. hence I always try to give testing a priority, I really experienced the mess when we need to do manual regression test on systems that have been written since years. 
+
+The domain logic is secured with focused unit tests validating each individual entity, while the use-case is ensured through `integration` tests employing mocked database - thanks to di - to verify that it's working as expected, while the entire end-to-end functionality is verified using comprehensive `end-to-end` tests. Achieving a total coverage of 87% with 100% coverage of the core logic!
+
+you can run the coverage test using: 
+
+```php
+php artisan test --coverage-html /coverage    
+```
+
+When it comes to the quality, PHPStan knows better. PHPStan for used for static analysis to enforce accurate typings and coding standards. Additionally, both PHPStan and PHPUnit are integrated into the Continuous Integration pipeline, triggering checks whenever any PHP file is pushed on main. 

@@ -242,7 +242,7 @@ To ensure data integrity, the idea of an `outbox` table was introduced. Unlike k
 - Scheduler for Resilience:
 To handle scenarios where the queue might be down or the system faces disruptions after order confirmation, a scheduler was implemented. This scheduler regularly checks the `low_stock_notification`, specifically the outbox table, every 30 minutes. If it discovers any stuck notifications (those not marked as SENT), it dispatches them to the queue for processing.
 
-### Testing and Quality - Continuous Integration.
+### Testing and Quality - Continuous Integration
 
 In the collaborative landscape of open source, I've gleaned invaluable insights into the pivotal role tests play. They not only enhance the reliability of code but also foster a collaborative and sustainable development environment. hence I always try to give testing a priority, I experienced a mess when we needed to do manual regression tests on systems that have been written for years. 
 

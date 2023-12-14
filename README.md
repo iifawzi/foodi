@@ -174,7 +174,7 @@ Some race conditions might still happen, the mail services usually can ensure `i
 
 ![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/36370bab-b3a9-4677-9471-eb21711daac1)
 
-The way I've organized the code follows `SOLID` and `Hexagonal Architecture principles while isolating the domain layer following `ddd-design`, making it easy to understand and maintain.
+The way I've organized the code follows `SOLID` and `Hexagonal Architecture` principles, while isolating the domain layer following `Domain Driven Design` techniques, making the code modular, testable, and easier to maintain.
 
 #### Files Structure
 
@@ -227,16 +227,19 @@ The business logic — the rules and processes we all understand — is encapsul
 
 The heart of the domain is the entities. These hold essential data, representing real-world concepts like orders, ingredients, and the specifics of the food we love. These entities act as the backbone of the system, defining what data we work with and how it relates.
 
+The entities are built in isolation 
+
 -   Use Cases:
 
 Within the `use cases`, we zoom in on specific scenarios, like creating an order. Here, use cases focus on the detailed steps and logic involved in executing a particular use case. This approach keeps our business logic organized and easy to follow.
 
 -   Isolation and Dependency Management
 
-The domain is deliberately isolated, meaning it operates independently of any infrastructure-related logic. This isolation is intentional— it allows us to maintain a clear distinction between what our system does (business logic) and how it does it (infrastructure logic).
+The domain is deliberately isolated, meaning it operates independently of any infrastructure-related logic. it allows us to maintain a clear distinction between what our system does (business logic) and how it does it (infrastructure logic).
+
 https://github.com/iifawzi/foodi/blob/0aa62ae42c20c732d817cde111b30b846647c1e0/src/Application/services/OrderService.php#L15-L26
 
-Dependencies are inverted, the service is communicating with the interfaces, and thanks to the Service providers, they're injected. 
+As you see, the dependencies are inverted, the service is communicating with the abstractions, and thanks to the Service providers, they're injected. 
 
 https://github.com/iifawzi/foodi/blob/dbb5593ed7f34d5b0d6c237c870ca5e8f64fba39/app/Providers/AppServiceProvider.php#L32-L42
 

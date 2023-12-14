@@ -2,6 +2,7 @@
 
 namespace Src\Infrastructure\repositories\Eloquent;
 
+use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
 use Src\Application\ports\infrastructure\repositories\OrderRepository;
 use Src\Domain\Entities\Order;
@@ -11,13 +12,13 @@ class EloquentOrderRepository implements OrderRepository
     public function saveOrder(Order $order): void
     {
         $items = [];
-
         foreach ($order->getItems() as $item) {
             $items[] = [
                 "quantity" => $item->getQuantity(),
                 "unit_price" => $item->getUnitPrice(),
                 "total_price" => $item->getTotalPrice(),
                 "product_id" => $item->getId(),
+                "order_id" => $order->getId()->toString()
             ];
         }
 
@@ -25,14 +26,13 @@ class EloquentOrderRepository implements OrderRepository
         /**
  * @var \App\Models\Order $orderModel
 */
-        $orderModel = \App\Models\Order::factory()->createOne(
+         \App\Models\Order::create(
             [
             "order_id" => $order->getId()->toString(),
             "status" => $order->getStatus(),
             ]
         );
-
-        $orderModel->items()->createMany($items);
+        OrderItem::insert($items);
     }
 
     public function startTransaction(): void

@@ -13,6 +13,7 @@ class Order extends Model
     protected $primaryKey = "order_id";
     protected $keyType = 'string';
 
+    protected $fillable = ["order_id", "status"];
     /**
      * @var string[]
      */

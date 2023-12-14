@@ -30,15 +30,13 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
     public function getStuckNotifications(): array
     {
         DB::beginTransaction();
-        $notificationIds = LowStockNotification::query()
-            ->where("status", LowStockNotificationType::PENDING)
+        $notificationIds = LowStockNotification::where("status", LowStockNotificationType::PENDING)
             ->where('updated_at', '<=', Carbon::now('UTC')->subMinutes(30))
             ->pluck('notification_id')
             ->toArray();
 
         if (count($notificationIds)) {
-            LowStockNotification::query()
-                ->whereIn('notification_id', $notificationIds)
+            LowStockNotification::whereIn('notification_id', $notificationIds)
                 ->where("status", LowStockNotificationType::PENDING)
                 ->update(['updated_at' => Carbon::now('UTC')]);
         }
@@ -56,7 +54,7 @@ class EloquentStockNotificationRepository implements StockNotificationRepository
 
     public function markSent(array $notificationIds): void
     {
-        LowStockNotification::query()->whereIn('notification_id', $notificationIds)
+        LowStockNotification::whereIn('notification_id', $notificationIds)
             ->where('status', LowStockNotificationType::PENDING)
             ->update(['status' => LowStockNotificationType::SENT]);
     }

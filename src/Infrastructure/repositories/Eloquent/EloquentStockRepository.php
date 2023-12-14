@@ -54,8 +54,7 @@ class EloquentStockRepository implements StockRepository
         }
         $caseStatements = implode(" ", $caseStatements);
         // The goal is to update all the stocks in a single query.
-        IngredientStock::query()
-            ->whereIn('ingredient_id', $ingredientIds)
+        IngredientStock::whereIn('ingredient_id', $ingredientIds)
             ->update(
                 [
                 'available_quantity' => DB::raw("CASE ingredient_id $caseStatements ELSE available_quantity END")

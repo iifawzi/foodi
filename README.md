@@ -140,13 +140,13 @@ Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, th
 
 -   Mailing Service Reliability: Proactive measures are in place to address potential issues with sending emails. This includes scenarios where the mailing service is non-operational or the mailing queue experiences downtime.
 
-For the concurrency challenge it depends on a lot of factors, are we expecting an immediate response from the user? or can we `queue` it and respond later with either confirmation or cancellation? or do we need to respond synchronously? I chose to respond synchronously.
+For the concurrency challenge it depends on a lot of factors, what the business is expecting? is it required to respond immediately to the user? or can we `queue` it and respond later with either confirmation or cancellation? I chose to respond immediately and synchronously.
 
 to handle this, I used transactions with exclusive locks. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. in addition to that, an exclusive lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
 
 https://github.com/iifawzi/foodi/blob/bf18902bd3a1d7f1a07700d68ceaf0feda75d472/src/Infrastructure/repositories/Eloquent/EloquentStockRepository.php#L16
 
-on the other side, it's critical to notify the merchant about low stock. However, blocking order processing due to notification failures is not an option. 
+on the other side, for second challenge, it's critical to notify the merchant about low stock. However, blocking order processing due to notification failures is not an option. 
 
 Initially, the dispatcher was kept outside of the transaction to avoid hindering order flow. But, what if the system went down after order confirmation or if the notification queue was unavailable? This raised concerns about potential data loss.
 
@@ -258,7 +258,7 @@ The infrastructure layer serves as the foundation for a software system, housing
 
 In the collaborative landscape of open source, I've gleaned invaluable insights into the pivotal role tests play. They not only enhance the reliability of code but also foster a collaborative and sustainable development environment. hence I always try to give testing a priority, I experienced a mess when we needed to do manual regression tests on systems that have been written for years. 
 
-The domain logic is secured with focused unit tests validating each entity, while the use-case is ensured through `integration` tests employing a mocked database - thanks to di - to verify that it's working as expected, while the entire end-to-end functionality is verified using comprehensive `end-to-end` tests. Achieving a total coverage of 87% with 100% coverage of the core logic!
+The domain logic is secured with focused `unit tests` validating each entity, while the use-case is ensured through `integration` tests employing a mocked database - thanks to di - to verify that it's working as expected, while the entire end-to-end functionality is verified using comprehensive `end-to-end` tests. Achieving a total coverage of 87% with 100% coverage of the core logic!
 
 <img width="934" alt="Screenshot 2023-12-14 at 02 04 21" src="https://github.com/iifawzi/foodi/assets/46695441/7962d6d5-2b78-4df0-8e11-ceb6e3bc4f4f">
 

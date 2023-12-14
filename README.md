@@ -227,11 +227,15 @@ The business logic — the rules and processes we all understand — is encapsul
 
 The heart of the domain is the entities. These hold essential data, representing real-world concepts like orders, ingredients, and the specifics of the food we love. These entities act as the backbone of the system, defining what data we work with and how it relates.
 
-The entities are built in isolation 
+Implemented entities: `Merchant`, `Item`, `Ingredient`, `stockItem`, `Order`, and `StockTransactions`. Stock Transaction contains all the transactions (logs) that occurs on the stocks.   
 
 -   Use Cases:
 
 Within the `use cases`, we zoom in on specific scenarios, like creating an order. Here, use cases focus on the detailed steps and logic involved in executing a particular use case. This approach keeps our business logic organized and easy to follow.
+
+The only use-case is `CreateOrder`, it's responsible for checking the stocks and allocate the ingredients (`consume` call)
+
+https://github.com/iifawzi/foodi/blob/5b2a2136debde1d6aadbfe33e4a5774d434c7741/src/Domain/Services/OrderUseCases.php#L18-L36
 
 -   Isolation and Dependency Management
 

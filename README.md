@@ -130,6 +130,32 @@ Request:
 
 The system is built to be dependable, able to handle many orders at once, and be straightforward to test while maintaining high-quality standards.
 
+### System Architecture
+
+![Untitled Diagram drawio (2)](https://github.com/iifawzi/foodi/assets/46695441/a6f7d9b2-3a02-48aa-86e9-e45ec4f50dc8)
+
+Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, the system architecture takes into account potential challenges:
+
+-   Concurrency Challenge: when multiple orders are happening at once, there's a chance they could all think there are enough ingredients, leading to issues like overselling or running out of stock.
+
+-   Mailing Service Reliability: Proactive measures are in place to address potential issues with sending emails. This includes scenarios where the mailing service is non-operational or the mailing queue experiences downtime.
+
+For the concurrency challenge it depends on a lot of factors, are we expecting an immediate response from the user? or can we `queue` it and respond later with either confirmation or cancellation? or do we need to respond synchronously? I chose to respond synchronously.
+
+to handle this, I used transactions with exclusive locks. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. in addition to that, an exclusive lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
+
+https://github.com/iifawzi/foodi/blob/bf18902bd3a1d7f1a07700d68ceaf0feda75d472/src/Infrastructure/repositories/Eloquent/EloquentStockRepository.php#L16
+
+on the other side, it's critical to notify the merchant about low stock. However, blocking order processing due to notification failures is not an option. 
+
+Initially, the dispatcher was kept outside of the transaction to avoid hindering order flow. But, what if the system went down after order confirmation or if the notification queue was unavailable? This raised concerns about potential data loss.
+
+- Transactional Outbox:
+To ensure data integrity, the idea of an `outbox` table was introduced. Unlike keeping the dispatcher separate, now, the notification process is part of the actual transactions. When an order is confirmed, the system logs the notification details in an `low_stock_notification` table. If everything runs smoothly, this log is committed to the transaction. Later, when the worker performs the send mail action, it marks it as `SENT`. otherwise, it's still pending. 
+
+- Scheduler for Resilience:
+To handle scenarios where the queue might be down or the system faces disruptions after order confirmation, a scheduler was implemented. This scheduler regularly checks the `low_stock_notification`, specifically the outbox table, every 30 minutes. If it discovers any stuck notifications (those not marked as SENT), it dispatches them to the queue for processing.
+
 ### Code Architecture
 
 ![Untitled-2023-12-02-0248](https://github.com/iifawzi/foodi/assets/46695441/36370bab-b3a9-4677-9471-eb21711daac1)
@@ -227,32 +253,6 @@ This gives us the flexibility of choosing any adapter in the infra, whether it's
 ##### Infrastructure layer:
 
 The infrastructure layer serves as the foundation for a software system, housing implementations of the adapters both, the `repositories` and the `mailing service`. In this layer, you'll find the `eloquent` repositories implementations. on the other side, the `driven` adapters are defined in the core directory `app`. The infrastructure layer handles the technical and operational aspects that support the application's functionality.
-
-### System Architecture
-
-![Untitled Diagram drawio (2)](https://github.com/iifawzi/foodi/assets/46695441/a6f7d9b2-3a02-48aa-86e9-e45ec4f50dc8)
-
-Anticipating and mitigating Murphy's Law `if anything can go wrong, it will`, the system architecture takes into account potential challenges:
-
--   Concurrency Challenge: when multiple orders are happening at once, there's a chance they could all think there are enough ingredients, leading to issues like overselling or running out of stock.
-
--   Mailing Service Reliability: Proactive measures are in place to address potential issues with sending emails. This includes scenarios where the mailing service is non-operational or the mailing queue experiences downtime.
-
-For the concurrency challenge it depends on a lot of factors, are we expecting an immediate response from the user? or can we `queue` it and respond later with either confirmation or cancellation? or do we need to respond synchronously? I chose to respond synchronously.
-
-to handle this, I used transactions with exclusive locks. All operations involved in processing the order, from checking the ingredient stocks to confirmation, are encapsulated within a transaction. This ensures that either all steps succeed, maintaining data consistency, or the entire transaction fails, preventing inconsistent order confirmations. in addition to that, an exclusive lock is acquired when checking ingredient stocks. This lock ensures that only one order can access and modify the stock data at a time, preventing multiple orders from concurrently depleting the stock. The exclusive lock remains in place until the transaction is committed, safeguarding against race conditions during the critical confirmation phase.
-
-https://github.com/iifawzi/foodi/blob/bf18902bd3a1d7f1a07700d68ceaf0feda75d472/src/Infrastructure/repositories/Eloquent/EloquentStockRepository.php#L16
-
-on the other side, it's critical to notify the merchant about low stock. However, blocking order processing due to notification failures is not an option. 
-
-Initially, the dispatcher was kept outside of the transaction to avoid hindering order flow. But, what if the system went down after order confirmation or if the notification queue was unavailable? This raised concerns about potential data loss.
-
-- Transactional Outbox:
-To ensure data integrity, the idea of an `outbox` table was introduced. Unlike keeping the dispatcher separate, now, the notification process is part of the actual transactions. When an order is confirmed, the system logs the notification details in an `low_stock_notification` table. If everything runs smoothly, this log is committed to the transaction. Later, when the worker performs the send mail action, it marks it as `SENT`. otherwise, it's still pending. 
-
-- Scheduler for Resilience:
-To handle scenarios where the queue might be down or the system faces disruptions after order confirmation, a scheduler was implemented. This scheduler regularly checks the `low_stock_notification`, specifically the outbox table, every 30 minutes. If it discovers any stuck notifications (those not marked as SENT), it dispatches them to the queue for processing.
 
 ### Testing and Quality - Continuous Integration
 

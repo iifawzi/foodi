@@ -39,18 +39,21 @@ The system is configured in a way that it can work with `MySQL`, `Postgres`, and
     ```
     cp .env.example .env
     ```
-
-3. Configure the database connections as you wish
-4. Configure the SMTP mailing server for mailing notifications.
-5. Run database migrations and seeders
+3. Create Application key
+    ```
+    php artisan key:generate        
+    ```
+4. Configure the database connections as you wish
+5. Configure the SMTP mailing server for mailing notifications.
+6. Run database migrations and seeders
     ```
     php artisan migrate --seed
     ```
-6. Run the application in your preferred way, either it's `valet`, `serve`, or any other way.
+7. Run the application in your preferred way, either it's `valet`, `serve`, or any other way.
     ```bash
     php artisan serve
     ```
-7. Start the queue and schedular workers to handle notifications
+8. Start the queue and schedular workers to handle notifications
 
     ```
     ./vendor/bin/sail php artisan queue:work
@@ -60,7 +63,7 @@ The system is configured in a way that it can work with `MySQL`, `Postgres`, and
      ./vendor/bin/sail php artisan schedule:work
     ```
 
-8. Enjoy your order!
+9. Enjoy your order!
 
 ### Using Sail
 
@@ -78,21 +81,26 @@ The project also comes with Laravel Sail that runs `MySQL` by default. if you wi
     cp .env.example .env
     ```
 
-2. Configure the SMTP mailing server for mailing notifications.
+3. Create Application key
+    ```
+    php artisan key:generate        
+    ```
 
-3. Start the Docker containers:
+4. Configure the SMTP mailing server for mailing notifications.
+
+5. Start the Docker containers:
 
     ```
     ./vendor/bin/sail up -d
     ```
 
-4. Run database migrations and seeders:
+6. Run database migrations and seeders:
 
     ```
     ./vendor/bin/sail php artisan migrate --seed
     ```
 
-5. Start the queue and schedular workers to handle notifications
+7. Start the queue and schedular workers to handle notifications
 
     ```
     ./vendor/bin/sail php artisan queue:work
@@ -102,7 +110,7 @@ The project also comes with Laravel Sail that runs `MySQL` by default. if you wi
      ./vendor/bin/sail php artisan schedule:work
     ```
 
-6. Enjoy your order!
+8. Enjoy your order!
 
 ## tl;dr
 
@@ -288,6 +296,8 @@ you can run the coverage test using:
 ```php
 php artisan test --coverage-html /coverage    
 ```
+
+- please note that after running any tests, you need to refill the database if you will use it again outside the tests.
 
 When it comes to the quality, PHPStan knows better. PHPStan for used for static analysis to enforce accurate typings and coding standards. Additionally, both PHPStan and PHPUnit are integrated into the Continuous Integration pipeline, triggering checks whenever any PHP file is pushed on main. 
 
